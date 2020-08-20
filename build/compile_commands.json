@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/aaron/Dropbox/Projects/CryptoNets/build",
+  "command": "/usr/local/bin/clang++ -isystem /usr/local/include/SEAL-3.5 -g -pthread -std=gnu++17 -o CMakeFiles/main.dir/main.cpp.o -c /home/aaron/Dropbox/Projects/CryptoNets/main.cpp",
+  "file": "/home/aaron/Dropbox/Projects/CryptoNets/main.cpp"
+}
+]
