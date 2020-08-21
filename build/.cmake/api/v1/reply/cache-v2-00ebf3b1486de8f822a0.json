@@ -843,7 +843,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "HE_test"
+			"value" : "CryptoNets"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1124,6 +1124,30 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
+		},
+		{
+			"name" : "CryptoNets_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/aaron/Dropbox/Projects/CryptoNets/build"
+		},
+		{
+			"name" : "CryptoNets_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/home/aaron/Dropbox/Projects/CryptoNets"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",

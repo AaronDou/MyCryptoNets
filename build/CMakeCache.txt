@@ -137,7 +137,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=HE_test
+CMAKE_PROJECT_NAME:STATIC=CryptoNets
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -200,6 +200,12 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+
+//Value Computed by CMake
+CryptoNets_BINARY_DIR:STATIC=/home/aaron/Dropbox/Projects/CryptoNets/build
+
+//Value Computed by CMake
+CryptoNets_SOURCE_DIR:STATIC=/home/aaron/Dropbox/Projects/CryptoNets
 
 //Value Computed by CMake
 HE_test_BINARY_DIR:STATIC=/home/aaron/Dropbox/Projects/CryptoNets/build
