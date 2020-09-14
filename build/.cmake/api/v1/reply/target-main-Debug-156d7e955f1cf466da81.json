@@ -25,13 +25,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 8,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 10,
+				"line" : 14,
 				"parent" : 0
 			}
 		]
@@ -49,6 +49,10 @@
 					"fragment" : "-pthread"
 				},
 				{
+					"backtrace" : 2,
+					"fragment" : "-std=c++14"
+				},
+				{
 					"fragment" : "-std=gnu++17"
 				}
 			],
@@ -58,6 +62,16 @@
 					"backtrace" : 2,
 					"isSystem" : true,
 					"path" : "/usr/local/include/SEAL-3.5"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/home/aaron/Downloads/libtorch/include"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "/home/aaron/Downloads/libtorch/include/torch/csrc/api/include"
 				}
 			],
 			"language" : "CXX",
@@ -81,12 +95,38 @@
 				"role" : "flags"
 			},
 			{
+				"fragment" : "-Wl,-rpath,/home/aaron/Downloads/libtorch/lib",
+				"role" : "libraries"
+			},
+			{
 				"backtrace" : 2,
 				"fragment" : "/usr/local/lib/libseal-3.5.a",
 				"role" : "libraries"
 			},
 			{
+				"backtrace" : 2,
+				"fragment" : "/home/aaron/Downloads/libtorch/lib/libtorch.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/home/aaron/Downloads/libtorch/lib/libc10.so",
+				"role" : "libraries"
+			},
+			{
 				"fragment" : "-pthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-Wl,--no-as-needed,/home/aaron/Downloads/libtorch/lib/libtorch_cpu.so -Wl,--as-needed",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "/home/aaron/Downloads/libtorch/lib/libc10.so",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-Wl,--no-as-needed,/home/aaron/Downloads/libtorch/lib/libtorch.so -Wl,--as-needed",
 				"role" : "libraries"
 			}
 		],

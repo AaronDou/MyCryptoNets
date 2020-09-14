@@ -1,1 +1,1 @@
-# PPML
+# A C++ implementation of CryptoNets

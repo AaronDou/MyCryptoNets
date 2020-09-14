@@ -2,6 +2,18 @@
 	"entries" : 
 	[
 		{
+			"name" : "C10_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/home/aaron/Downloads/libtorch/lib/libc10.so"
+		},
+		{
 			"name" : "CMAKE_ADDR2LINE",
 			"properties" : 
 			[
@@ -810,6 +822,18 @@
 			"value" : "1"
 		},
 		{
+			"name" : "CMAKE_PREFIX_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/home/aaron/Downloads/libtorch"
+		},
+		{
 			"name" : "CMAKE_PROJECT_DESCRIPTION",
 			"properties" : 
 			[
@@ -1126,6 +1150,18 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "Caffe2_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Caffe2."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/home/aaron/Downloads/libtorch/share/cmake/Caffe2"
+		},
+		{
 			"name" : "CryptoNets_BINARY_DIR",
 			"properties" : 
 			[
@@ -1162,6 +1198,18 @@
 			"value" : "[TRUE][v()]"
 		},
 		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Torch",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding Torch"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[/home/aaron/Downloads/libtorch/lib/libtorch.so][/home/aaron/Downloads/libtorch/include;/home/aaron/Downloads/libtorch/include/torch/csrc/api/include][v()]"
+		},
+		{
 			"name" : "HE_test_BINARY_DIR",
 			"properties" : 
 			[
@@ -1186,6 +1234,30 @@
 			"value" : "/home/aaron/Dropbox/Projects/CryptoNets"
 		},
 		{
+			"name" : "MKLDNN_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for MKLDNN."
+				}
+			],
+			"type" : "PATH",
+			"value" : "MKLDNN_DIR-NOTFOUND"
+		},
+		{
+			"name" : "MKL_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for MKL."
+				}
+			],
+			"type" : "PATH",
+			"value" : "MKL_DIR-NOTFOUND"
+		},
+		{
 			"name" : "SEAL_DIR",
 			"properties" : 
 			[
@@ -1208,6 +1280,54 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "TRUE"
+		},
+		{
+			"name" : "TORCH_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/home/aaron/Downloads/libtorch/lib/libtorch.so"
+		},
+		{
+			"name" : "Torch_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Torch."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/home/aaron/Downloads/libtorch/share/cmake/Torch"
+		},
+		{
+			"name" : "xtensor_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for xtensor."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/usr/lib/cmake/xtensor"
+		},
+		{
+			"name" : "xtl_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for xtl."
+				}
+			],
+			"type" : "PATH",
+			"value" : "/usr/local/lib/cmake/xtl"
 		}
 	],
 	"kind" : "cache",
