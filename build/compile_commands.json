@@ -1,7 +1,12 @@
 [
 {
-  "directory": "/home/aaron/Dropbox/Projects/CryptoNets/build",
-  "command": "/usr/local/bin/clang++ -isystem /usr/local/include/SEAL-3.5 -isystem /home/aaron/Downloads/libtorch/include -isystem /home/aaron/Downloads/libtorch/include/torch/csrc/api/include -g -pthread -std=c++14 -std=gnu++17 -o CMakeFiles/main.dir/main.cpp.o -c /home/aaron/Dropbox/Projects/CryptoNets/main.cpp",
-  "file": "/home/aaron/Dropbox/Projects/CryptoNets/main.cpp"
+  "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/libtest.dir/test/tests.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/tests.cpp",
+  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/tests.cpp"
+},
+{
+  "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/main.dir/main.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/main.cpp",
+  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/main.cpp"
 }
 ]

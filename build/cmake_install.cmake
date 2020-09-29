@@ -1,4 +1,4 @@
-# Install script for directory: /home/aaron/Dropbox/Projects/CryptoNets
+# Install script for directory: /home/aaron/Dropbox/Projects/MyCryptoNets
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aaron/Dropbox/Projects/CryptoNets/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/aaron/Dropbox/Projects/MyCryptoNets/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

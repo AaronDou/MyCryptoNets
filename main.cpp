@@ -1,31 +1,9 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <chrono>
-#include <sstream>
-#include <ctime>
-#include <iomanip>
-#include <fstream>
-#include <regex>
 
-#include "seal/seal.h"
+#include "core.h"
 
 using namespace std;
 using namespace seal;
-
-struct Weights
-{
-    vector<double> convWeights;
-    vector<double> FC1Weights;
-    vector<double> FC1Biases;
-    vector<double> FC2Weights;
-    vector<double> FC2Biases;
-};
-
-void cryptonets(const Weights &, const vector<vector<uint64_t>> &, uint64_t, size_t);
-Weights readWeights();
-vector<vector<uint64_t>> readInput(double, double);
-void test();
+using namespace mycryptonets;
 
 int main()
 {
@@ -34,127 +12,9 @@ int main()
     // uint64_t plain_modulus = 549764251649; // 549764284417
     // size_t poly_modulus_degree = 8192;
     // cryptonets(weights, input, plain_modulus, poly_modulus_degree);
-
-    test();
+    // SealBFVEnvironment env;
 
     return 0;
-}
-
-vector<double> split(const string &s, char delim)
-{
-    vector<double> elems;
-    istringstream iss(s);
-    string item;
-    while (getline(iss, item, delim))
-    {
-        elems.push_back(stod(item));
-    }
-    return elems;
-}
-
-vector<int> extractIntegers(const string &s)
-{
-    std::regex r("([0-9]+)");
-    std::vector<int> results;
-    for (std::sregex_iterator i = std::sregex_iterator(s.begin(), s.end(), r);
-         i != std::sregex_iterator();
-         ++i)
-    {
-        std::smatch m = *i;
-        results.push_back(std::stod(m[1].str().c_str()));
-    }
-    return results;
-}
-
-// Return 785 * 10000 matrix
-// The top 784 rows are for input pixel values.
-// The bottom 1 row is for labels.
-vector<vector<uint64_t>> readInput(double normalizationFactor, double scale)
-{
-    size_t numRows = 28 * 28 + 1;
-    size_t numCols = 10000;
-    vector<uint64_t> pixelBatch(numCols, 0);
-    vector<vector<uint64_t>> input(numRows, pixelBatch);
-    ifstream infile("/home/aaron/Dropbox/Projects/MyCryptoNets/MNIST-28x28-test.txt");
-    if (!infile.is_open())
-    {
-        exit(1);
-    }
-
-    string line;
-    // 7	784	202:84	203:185	204:159	205:151	206:60	207:36	230:222	231:254	232:254	233:254	234:254	235:241	236:198	237:198	238:198	239:198	240:198	241:198	242:198	243:198	244:170	245:52	258:67	259:114	260:72	261:114	262:163	263:227	264:254	265:225	266:254	267:254	268:254	269:250	270:229	271:254	272:254	273:140	291:17	292:66	293:14	294:67	295:67	296:67	297:59	298:21	299:236	300:254	301:106	326:83	327:253	328:209	329:18	353:22	354:233	355:255	356:83	381:129	382:254	383:238	384:44	408:59	409:249	410:254	411:62	436:133	437:254	438:187	439:5	463:9	464:205	465:248	466:58	491:126	492:254	493:182	518:75	519:251	520:240	521:57	545:19	546:221	547:254	548:166	572:3	573:203	574:254	575:219	576:35	600:38	601:254	602:254	603:77	627:31	628:224	629:254	630:115	631:1	655:133	656:254	657:254	658:52	682:61	683:242	684:254	685:254	686:52	710:121	711:254	712:254	713:219	714:40	738:121	739:254	740:207	741:18
-    size_t index = 0;
-    while (getline(infile, line))
-    {
-        auto pairs = extractIntegers(line);
-        input[numRows - 1][index] = pairs[0];
-
-        for (size_t i = 2; i < pairs.size(); i += 2)
-        {
-            input[pairs[i]][index] = round(pairs[i + 1] * normalizationFactor * scale);
-        }
-        index++;
-    }
-
-    infile.close();
-
-    return input;
-}
-
-Weights readWeights()
-{
-    ifstream infile("/home/aaron/Dropbox/Projects/MyCryptoNets/LinerWeights.txt");
-    if (!infile.is_open())
-    {
-        exit(1);
-    }
-
-    Weights weights;
-    string line;
-
-    getline(infile, line);
-    weights.convWeights = split(line, ' ');
-
-    getline(infile, line);
-    weights.FC1Weights = split(line, ' ');
-    getline(infile, line);
-    weights.FC1Biases = split(line, ' ');
-
-    getline(infile, line);
-    weights.FC2Weights = split(line, ' ');
-    getline(infile, line);
-    weights.FC2Biases = split(line, ' ');
-
-    infile.close();
-
-    return weights;
-}
-
-
-void square(Evaluator& evaluator, const RelinKeys& relin_keys, vector<Ciphertext> input) {
-    for (vector<Ciphertext>::iterator it = input.begin(); it != input.end(); ++it)
-    {
-        evaluator.square_inplace(*it);
-        evaluator.relinearize_inplace(*it, relin_keys);
-    }
-}
-
-void test() {
-     EncryptionParameters parms(scheme_type::BFV);
-     size_t poly_modulus_degree = 4096;
-    parms.set_poly_modulus_degree(poly_modulus_degree);
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-    parms.set_plain_modulus(plain_modulus);
-
-    auto context = SEALContext::Create(parms);
-    IntegerEncoder encoder(context);
-    KeyGenerator keygen(context);
-    PublicKey public_key = keygen.public_key();
-    SecretKey secret_key = keygen.secret_key();
-    RelinKeys relin_keys = keygen.relin_keys_local();
-    Encryptor encryptor(context, public_key);
-    Evaluator evaluator(context);
-    Decryptor decryptor(context, secret_key);
 }
 
 void cryptonets(const Weights &weight, const vector<vector<uint64_t>> &input, uint64_t plain_modulus, size_t poly_modulus_degree)
@@ -174,19 +34,20 @@ void cryptonets(const Weights &weight, const vector<vector<uint64_t>> &input, ui
     parms.set_plain_modulus(plain_modulus);
 
     auto context = SEALContext::Create(parms);
-    IntegerEncoder encoder(context);
     KeyGenerator keygen(context);
+    IntegerEncoder encoder(context);
     PublicKey public_key = keygen.public_key();
     SecretKey secret_key = keygen.secret_key();
     RelinKeys relin_keys = keygen.relin_keys_local();
     Encryptor encryptor(context, public_key);
     Evaluator evaluator(context);
     Decryptor decryptor(context, secret_key);
+    BatchEncoder batch_encoder(context);
 
     auto time_norelin_start = chrono::high_resolution_clock::now();
 
     cout << "Generating weights plaintext for Conv 1 ..." << endl;
-    int p_len = 5 * 25;
+    size_t p_len = 5 * 25;
     vector<Plaintext> p_conv_vec;
     for (int idx = 0; idx < p_len; idx++)
     {

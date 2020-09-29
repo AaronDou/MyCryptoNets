@@ -1,3 +1,5 @@
-/home/aaron/Dropbox/Projects/CryptoNets/build/CMakeFiles/rebuild_cache.dir
-/home/aaron/Dropbox/Projects/CryptoNets/build/CMakeFiles/edit_cache.dir
-/home/aaron/Dropbox/Projects/CryptoNets/build/CMakeFiles/main.dir
+/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/rebuild_cache.dir
+/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/edit_cache.dir
+/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/libtest.dir
+/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/main.dir
+/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/core.dir
