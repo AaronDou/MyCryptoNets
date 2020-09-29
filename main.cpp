@@ -1,194 +1,344 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include <chrono>
-#include <thread>
-#include <torch/script.h>
-#include <torch/torch.h>
+#include <sstream>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <regex>
 
 #include "seal/seal.h"
-#include "util.h"
-#include "xtensor/xarray.hpp"
-#include "xtensor/xio.hpp"
-#include "xtensor/xview.hpp"
-#include "xtensor/xadapt.hpp"
-#include "xtensor/xfixed.hpp"
 
 using namespace std;
 using namespace seal;
 
-const std::string MODULE_PATH = "/home/aaron/Dropbox/Projects/Tenseal/model/mnist_script_model.pt";
-
-struct ModelParameters
+struct Weights
 {
-     xt::xtensor_fixed<Plaintext, xt::xshape<3>> conv_weight; // 5 * 5 * 5
-     xt::xtensor_fixed<Plaintext, xt::xshape<1>> conv_bias;   // 5
-
-     xt::xtensor_fixed<Plaintext, xt::xshape<2>> fc1_weight; // 845 * 100
-     xt::xtensor_fixed<Plaintext, xt::xshape<1>> fc1_bias;   // 100
-
-     xt::xtensor_fixed<Plaintext, xt::xshape<2>> fc2_weight; // 100 * 10
-     xt::xtensor_fixed<Plaintext, xt::xshape<1>> fc2_bias;   // 10
+    vector<double> convWeights;
+    vector<double> FC1Weights;
+    vector<double> FC1Biases;
+    vector<double> FC2Weights;
+    vector<double> FC2Biases;
 };
 
-torch::jit::script::Module loadModule()
-{
-     torch::jit::script::Module module;
-     try
-     {
-          // Deserialize the ScriptModule from a file using torch::jit::load().
-          module = torch::jit::load(MODULE_PATH);
-     }
-     catch (const c10::Error &e)
-     {
-          std::cerr << "error loading the model: " << e.what();
-          throw;
-     }
-     return module;
-}
-
-template <typename T>
-void encodeFromTensor(IntegerEncoder &encoder, const at::Tensor &tensor, const int64_t scale, xt::xtensor_fixed<Plaintext, T> &encodedTensor)
-{
-     auto scaledTensor = torch::round(torch::squeeze(pair.value) * scale);
-     for ()
-     encoder.encode(int(*(params.index({2, 0, 0}).data_ptr<float>())), value);
-     mp.conv_weight(2, 0, 0) = value;
-     std::cout << pair.name << ": " << params.sizes() << std::endl;
-     cout << mp.conv_weight(2, 0, 0).to_string() << endl;
-     cout << encoder.decode_int32(mp.conv_weight(2, 0, 0));
-}
-
-void encodeModelParameters(IntegerEncoder &encoder, const torch::jit::script::Module &module, const int64_t scale, ModelParameters &mp)
-{
-     for (const auto &pair : module.named_parameters())
-     {
-          encodeFromTensor<xt::xshape<3>>(encoder, pair.value, scale, mp.conv_weight);
-
-          break;
-     }
-}
+void cryptonets(const Weights &, const vector<vector<uint64_t>> &, uint64_t, size_t);
+Weights readWeights();
+vector<vector<uint64_t>> readInput(double, double);
+void test();
 
 int main()
 {
+    // auto weights = readWeights();
+    // auto input = readInput(1.0 / 256.0, 16.0);
+    // uint64_t plain_modulus = 549764251649; // 549764284417
+    // size_t poly_modulus_degree = 8192;
+    // cryptonets(weights, input, plain_modulus, poly_modulus_degree);
+
+    test();
+
+    return 0;
+}
+
+vector<double> split(const string &s, char delim)
+{
+    vector<double> elems;
+    istringstream iss(s);
+    string item;
+    while (getline(iss, item, delim))
+    {
+        elems.push_back(stod(item));
+    }
+    return elems;
+}
+
+vector<int> extractIntegers(const string &s)
+{
+    std::regex r("([0-9]+)");
+    std::vector<int> results;
+    for (std::sregex_iterator i = std::sregex_iterator(s.begin(), s.end(), r);
+         i != std::sregex_iterator();
+         ++i)
+    {
+        std::smatch m = *i;
+        results.push_back(std::stod(m[1].str().c_str()));
+    }
+    return results;
+}
+
+// Return 785 * 10000 matrix
+// The top 784 rows are for input pixel values.
+// The bottom 1 row is for labels.
+vector<vector<uint64_t>> readInput(double normalizationFactor, double scale)
+{
+    size_t numRows = 28 * 28 + 1;
+    size_t numCols = 10000;
+    vector<uint64_t> pixelBatch(numCols, 0);
+    vector<vector<uint64_t>> input(numRows, pixelBatch);
+    ifstream infile("/home/aaron/Dropbox/Projects/MyCryptoNets/MNIST-28x28-test.txt");
+    if (!infile.is_open())
+    {
+        exit(1);
+    }
+
+    string line;
+    // 7	784	202:84	203:185	204:159	205:151	206:60	207:36	230:222	231:254	232:254	233:254	234:254	235:241	236:198	237:198	238:198	239:198	240:198	241:198	242:198	243:198	244:170	245:52	258:67	259:114	260:72	261:114	262:163	263:227	264:254	265:225	266:254	267:254	268:254	269:250	270:229	271:254	272:254	273:140	291:17	292:66	293:14	294:67	295:67	296:67	297:59	298:21	299:236	300:254	301:106	326:83	327:253	328:209	329:18	353:22	354:233	355:255	356:83	381:129	382:254	383:238	384:44	408:59	409:249	410:254	411:62	436:133	437:254	438:187	439:5	463:9	464:205	465:248	466:58	491:126	492:254	493:182	518:75	519:251	520:240	521:57	545:19	546:221	547:254	548:166	572:3	573:203	574:254	575:219	576:35	600:38	601:254	602:254	603:77	627:31	628:224	629:254	630:115	631:1	655:133	656:254	657:254	658:52	682:61	683:242	684:254	685:254	686:52	710:121	711:254	712:254	713:219	714:40	738:121	739:254	740:207	741:18
+    size_t index = 0;
+    while (getline(infile, line))
+    {
+        auto pairs = extractIntegers(line);
+        input[numRows - 1][index] = pairs[0];
+
+        for (size_t i = 2; i < pairs.size(); i += 2)
+        {
+            input[pairs[i]][index] = round(pairs[i + 1] * normalizationFactor * scale);
+        }
+        index++;
+    }
+
+    infile.close();
+
+    return input;
+}
+
+Weights readWeights()
+{
+    ifstream infile("/home/aaron/Dropbox/Projects/MyCryptoNets/LinerWeights.txt");
+    if (!infile.is_open())
+    {
+        exit(1);
+    }
+
+    Weights weights;
+    string line;
+
+    getline(infile, line);
+    weights.convWeights = split(line, ' ');
+
+    getline(infile, line);
+    weights.FC1Weights = split(line, ' ');
+    getline(infile, line);
+    weights.FC1Biases = split(line, ' ');
+
+    getline(infile, line);
+    weights.FC2Weights = split(line, ' ');
+    getline(infile, line);
+    weights.FC2Biases = split(line, ' ');
+
+    infile.close();
+
+    return weights;
+}
+
+
+void square(Evaluator& evaluator, const RelinKeys& relin_keys, vector<Ciphertext> input) {
+    for (vector<Ciphertext>::iterator it = input.begin(); it != input.end(); ++it)
+    {
+        evaluator.square_inplace(*it);
+        evaluator.relinearize_inplace(*it, relin_keys);
+    }
+}
+
+void test() {
      EncryptionParameters parms(scheme_type::BFV);
      size_t poly_modulus_degree = 4096;
-     parms.set_poly_modulus_degree(poly_modulus_degree);
-     parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-     parms.set_plain_modulus(1024);
+    parms.set_poly_modulus_degree(poly_modulus_degree);
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+    parms.set_plain_modulus(plain_modulus);
 
-     auto context = SEALContext::Create(parms);
-     KeyGenerator keygen(context);
-     PublicKey public_key = keygen.public_key();
-     SecretKey secret_key = keygen.secret_key();
-     RelinKeys relin_keys = keygen.relin_keys_local();
-     Encryptor encryptor(context, public_key);
-     Evaluator evaluator(context);
-     Decryptor decryptor(context, secret_key);
-     IntegerEncoder encoder(context);
+    auto context = SEALContext::Create(parms);
+    IntegerEncoder encoder(context);
+    KeyGenerator keygen(context);
+    PublicKey public_key = keygen.public_key();
+    SecretKey secret_key = keygen.secret_key();
+    RelinKeys relin_keys = keygen.relin_keys_local();
+    Encryptor encryptor(context, public_key);
+    Evaluator evaluator(context);
+    Decryptor decryptor(context, secret_key);
+}
 
-     auto module = loadModule();
-     ModelParameters mp;
-     encodeModelParameters(encoder, module, 1e3, mp);
+void cryptonets(const Weights &weight, const vector<vector<uint64_t>> &input, uint64_t plain_modulus, size_t poly_modulus_degree)
+{
+    /*
+     * Parameter selections
+     * First pick a good plaintext modulus so that computation won't overflow
+     * Depth is roughly determined by log2(Q/t) - 1. For more depth, increase Q (coeff_modulus). 
+     *    - Fine tune Q by adopting trial-and-error
+     *    - Specifically, start from a modestly small Q, evaluate the circuit. If it fails, then increase Q and so on.
+     * Choose n based on Q according to the expected security level.
+     *    - There's a map from homomorphicencryption.org
+     */
+    EncryptionParameters parms(scheme_type::BFV);
+    parms.set_poly_modulus_degree(poly_modulus_degree);
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+    parms.set_plain_modulus(plain_modulus);
 
-     // const size_t load = 200;
+    auto context = SEALContext::Create(parms);
+    IntegerEncoder encoder(context);
+    KeyGenerator keygen(context);
+    PublicKey public_key = keygen.public_key();
+    SecretKey secret_key = keygen.secret_key();
+    RelinKeys relin_keys = keygen.relin_keys_local();
+    Encryptor encryptor(context, public_key);
+    Evaluator evaluator(context);
+    Decryptor decryptor(context, secret_key);
 
-     // // Prepare weight
-     // xt::xtensor_fixed<Plaintext, xt::xshape<load, load>> weight{};
-     // for (size_t i = 0; i < weight.size(); i++)
-     // {
-     //      // CAVEAT: multiply plaintext 0 doesn't make sense and is not allowed
-     //      weight(i / load, i % load) = encoder.encode(i + 1);
-     // }
+    auto time_norelin_start = chrono::high_resolution_clock::now();
 
-     // // Prepare bias
-     // xt::xtensor_fixed<Plaintext, xt::xshape<load>> bias{};
-     // for (auto &it : bias)
-     // {
-     //      it = encoder.encode(5);
-     // }
+    cout << "Generating weights plaintext for Conv 1 ..." << endl;
+    int p_len = 5 * 25;
+    vector<Plaintext> p_conv_vec;
+    for (int idx = 0; idx < p_len; idx++)
+    {
+        Plaintext enc_rval = encoder.encode((rand() % 10) + 1);
+        p_conv_vec.emplace_back(enc_rval);
+    }
 
-     // // Prepare x
-     // xt::xtensor_fixed<Plaintext, xt::xshape<load>> x{};
-     // for (size_t i = 0; i < x.size(); i++)
-     // {
-     //      x(i) = encoder.encode(i);
-     // }
+    int c_len = 169 * 25;
+    vector<Ciphertext> c_conv_vec;
+    for (int idx = 0; idx < c_len; idx++)
+    {
+        Plaintext enc_rval = encoder.encode((rand() % 5) + 1);
+        Ciphertext prval;
+        encryptor.encrypt(enc_rval, prval);
+        c_conv_vec.emplace_back(prval);
+    }
 
-     // // Encrypt
-     // xt::xtensor_fixed<Ciphertext, xt::xshape<load>> x_encrypted{};
-     // for (size_t i = 0; i < x_encrypted.size(); i++)
-     // {
-     //      encryptor.encrypt(x(i), x_encrypted(i));
-     // }
+    cout << "...pseudo-weights for Conv 1 complete" << endl;
 
-     // xt::xtensor_fixed<Ciphertext, xt::xshape<load>> result_encrypted{};
-     // for (size_t i = 0; i < result_encrypted.size(); i++)
-     // {
-     //      encryptor.encrypt(encoder.encode(0), result_encrypted(i));
-     // }
+    //conv 1: 5X169 <- 5X25 * 25X169, convert conv to matrix multiplication
+    cout << "Calculating Conv 1 ..." << endl;
+    int dot_len = 25;
+    vector<Ciphertext> conv_out;
+    for (int i = 0; i < p_len; i += dot_len)
+    {
+        for (int j = 0; j < c_len; j += dot_len)
+        {
+            vector<Ciphertext> dots;
+            for (int x = 0; x < dot_len; x++)
+            {
+                Ciphertext c_tpm;
+                evaluator.multiply_plain(c_conv_vec[j + x], p_conv_vec[i + x], c_tpm);
+                dots.emplace_back(c_tpm);
+            }
+            Ciphertext dotsum;
+            evaluator.add_many(dots, dotsum);
+            conv_out.emplace_back(dotsum);
+        }
+    }
 
-     // chrono::steady_clock::time_point time_start, time_end;
-     // time_start = chrono::steady_clock::now();
-     // for (size_t r = 0; r < result_encrypted.shape()[0]; r++)
-     // {
-     //      for (size_t c = 0; c < result_encrypted.shape()[1]; c++)
-     //      {
-     //           Ciphertext product;
-     //           evaluator.multiply_plain(x_encrypted(c), weight(r, c), product);
-     //           evaluator.add_inplace(result_encrypted(r), product);
-     //      }
-     //      evaluator.add_plain_inplace(result_encrypted(r), bias(r));
-     // }
-     // time_end = chrono::steady_clock::now();
-     // std::chrono::duration<double> time_diff = time_end - time_start;
-     // cout << "Done [" << time_diff.count() << " seconds]" << endl;
+    p_conv_vec.clear();
+    c_conv_vec.clear();
 
-     // // for (size_t i = 0; i < result_encrypted.size(); i++)
-     // // {
-     // //      Plaintext result;
-     // //      decryptor.decrypt(result_encrypted(i), result);
-     // //      cout << encoder.decode_int32(result) << endl;
-     // // }
+    //act: square
+    cout << "...Conv 1 is done" << endl;
 
-     // // Parallilize it with multithreading
-     // xt::xtensor_fixed<Ciphertext, xt::xshape<load>> result_encrypted_threading{};
-     // for (size_t i = 0; i < result_encrypted_threading.size(); i++)
-     // {
-     //      encryptor.encrypt(encoder.encode(0), result_encrypted_threading(i));
-     // }
+    cout << "Calculating activation layer 1 (square)..." << endl;
+    vector<Ciphertext> act_out;
+    for (vector<Ciphertext>::iterator it = conv_out.begin(); it != conv_out.end(); ++it)
+    {
+        Ciphertext c_tpm;
+        evaluator.square(*it, c_tpm);
+        act_out.emplace_back(c_tpm);
+    }
 
-     // time_start = chrono::steady_clock::now();
-     // const size_t num_threads = 5;
-     // std::vector<std::thread> threads;
-     // threads.reserve(num_threads);
-     // size_t worker_load = load/5; // assume const size_t
+    conv_out.clear();
+    cout << "...Activation layer 1 is done" << endl;
 
-     // for (size_t thread_idx = 0; thread_idx < num_threads; thread_idx++)
-     // {
-     //      std::vector<size_t> partition(worker_load);
-     //      std::iota(std::begin(partition), std::end(partition), thread_idx*worker_load);
+    //mean_pool: 100X1 <- 100X845 * 845X1, convert pool to matrix multiplication
+    //!!!I remove pool layer here, as the mean pool is in fact a CONV operation.
+    //!!!To evalute the accuracy performance, you should add this mean pooling layer
 
-     //      threads.emplace_back(std::thread([&](std::vector<size_t> rows) {
-     //           for (auto &r : rows)
-     //           {
-     //                for (size_t c = 0; c < result_encrypted_threading.shape()[1]; c++)
-     //                {
-     //                     Ciphertext product;
-     //                     evaluator.multiply_plain(x_encrypted(c), weight(r, c), product);
-     //                     evaluator.add_inplace(result_encrypted_threading(r), product);
-     //                }
-     //                evaluator.add_plain_inplace(result_encrypted_threading(r), bias(r));
-     //           }
-     //      },
-     //      partition));
-     // }
-     // for (auto &thread : threads)
-     // {
-     //      thread.join();
-     // }
+    cout << "Calculating pool + linear..." << endl;
 
-     // time_end = chrono::steady_clock::now();
-     // time_diff = time_end - time_start;
-     // cout << "Done [" << time_diff.count() << " seconds]" << endl;
+    //Generating pseudo-weights
+    p_len = 100 * 845;
+    vector<Plaintext> p_pool_vec;
+    for (int idx = 0; idx < p_len; idx++)
+    {
+        Plaintext enc_rval = encoder.encode((rand() % 7) + 1);
+        p_pool_vec.emplace_back(enc_rval);
+    }
+    // pseudo-weights complete
 
-     // return 0;
+    dot_len = 845;
+    c_len = 845 * 1; // act_out.size()
+    vector<Ciphertext> pool_out;
+    for (int i = 0; i < p_len; i += dot_len)
+    {
+        for (int j = 0; j < c_len; j += dot_len)
+        {
+            vector<Ciphertext> dots;
+            for (int x = 0; x < dot_len; x++)
+            {
+                //cout << j+x<<"  "<<i+x << endl;
+                Ciphertext c_tpm;
+                evaluator.multiply_plain(act_out[j + x], p_pool_vec[i + x], c_tpm);
+                dots.emplace_back(c_tpm);
+            }
+            Ciphertext dotsum;
+            evaluator.add_many(dots, dotsum);
+            pool_out.emplace_back(dotsum);
+        }
+    }
+    act_out.clear();
+    p_pool_vec.clear();
+
+    cout << "...Pool+Linear layer  is done" << endl;
+
+    //act 2
+
+    cout << "Calculating activation layer 2 (square)..." << endl;
+    vector<Ciphertext> act_out_2;
+    for (vector<Ciphertext>::iterator it = pool_out.begin(); it != pool_out.end(); ++it)
+    {
+        Ciphertext c_tpm;
+        evaluator.square(*it, c_tpm);
+        act_out_2.emplace_back(c_tpm);
+    }
+
+    pool_out.clear();
+    cout << "...Activation layer 2 is done" << endl;
+
+    //FC: 10X1<- 10X100 * 100X1
+    cout << "Calculating FC layer..." << endl;
+
+    //Generating pseudo-weights
+    p_len = 10 * 100;
+    vector<Plaintext> p_fc_vec;
+    for (int idx = 0; idx < p_len; idx++)
+    {
+        Plaintext enc_rval = encoder.encode((rand() % 9) + 1);
+        p_fc_vec.emplace_back(enc_rval);
+    }
+    // pseudo-weights complete
+
+    dot_len = 100;
+    c_len = 100 * 1; // act_out_2.size()
+    vector<Ciphertext> fc_out;
+    for (int i = 0; i < p_len; i += dot_len)
+    {
+        for (int j = 0; j < c_len; j += dot_len)
+        {
+            vector<Ciphertext> dots;
+            for (int x = 0; x < dot_len; x++)
+            {
+                Ciphertext c_tpm;
+                evaluator.multiply_plain(act_out_2[j + x], p_fc_vec[i + x], c_tpm);
+                dots.emplace_back(c_tpm);
+            }
+            Ciphertext dotsum;
+            evaluator.add_many(dots, dotsum);
+            fc_out.emplace_back(dotsum);
+        }
+    }
+
+    cout << "...FC layer  is done" << endl;
+
+    //add decrypts here... if you want
+
+    auto time_norelin_end = chrono::high_resolution_clock::now();
+    cout << "Time of CryptoNets: " << chrono::duration_cast<chrono::microseconds>(time_norelin_end - time_norelin_start).count() / (1000 * 1000.0)
+         << " seconds" << endl;
+    return;
 }
