@@ -84,3 +84,12 @@
 5200	5562	1601368663	libtest	e9e6b9cd44f5bb2b
 1	5161	1601368677	CMakeFiles/libtest.dir/test/tests.cpp.o	fc0bc870d4165b36
 5161	5525	1601368677	libtest	e9e6b9cd44f5bb2b
+0	36	1601457421	build.ninja	58cf1ee5a68aad5e
+0	5165	1601458187	CMakeFiles/libtest.dir/test/Tests.cpp.o	36b55afb5c12214c
+0	5176	1601458187	CMakeFiles/main.dir/Main.cpp.o	2ccc00fbd8277dfd
+5177	5530	1601458187	main	414f3c7d2d739e66
+5166	5574	1601458187	libtest	efbd266d3edaecd2
+2	5289	1601458218	CMakeFiles/main.dir/Main.cpp.o	2ccc00fbd8277dfd
+2	5443	1601458219	CMakeFiles/libtest.dir/test/Tests.cpp.o	36b55afb5c12214c
+5289	5600	1601458219	main	414f3c7d2d739e66
+5443	5831	1601458219	libtest	efbd266d3edaecd2

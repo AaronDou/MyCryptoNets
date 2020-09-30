@@ -66,8 +66,8 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 
 build cmake_object_order_depends_target_libtest: phony || cmake_object_order_depends_target_core
 
-build CMakeFiles/libtest.dir/test/tests.cpp.o: CXX_COMPILER__libtest_Debug ../test/tests.cpp || cmake_object_order_depends_target_libtest
-  DEP_FILE = CMakeFiles/libtest.dir/test/tests.cpp.o.d
+build CMakeFiles/libtest.dir/test/Tests.cpp.o: CXX_COMPILER__libtest_Debug ../test/Tests.cpp || cmake_object_order_depends_target_libtest
+  DEP_FILE = CMakeFiles/libtest.dir/test/Tests.cpp.o.d
   FLAGS = -g -pthread -fopenmp=libomp -std=gnu++17
   INCLUDES = -I../include -isystem /usr/local/include/SEAL-3.5
   OBJECT_DIR = CMakeFiles/libtest.dir
@@ -81,7 +81,7 @@ build CMakeFiles/libtest.dir/test/tests.cpp.o: CXX_COMPILER__libtest_Debug ../te
 #############################################
 # Link the executable libtest
 
-build libtest: CXX_EXECUTABLE_LINKER__libtest_Debug CMakeFiles/libtest.dir/test/tests.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
+build libtest: CXX_EXECUTABLE_LINKER__libtest_Debug CMakeFiles/libtest.dir/test/Tests.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
   FLAGS = -g
   LINK_LIBRARIES = -lgtest_main  libcore.a  -lgtest  /usr/local/lib/libseal-3.5.a  -pthread  /usr/lib/x86_64-linux-gnu/libomp.so  -lpthread
   OBJECT_DIR = CMakeFiles/libtest.dir
@@ -99,8 +99,8 @@ build libtest: CXX_EXECUTABLE_LINKER__libtest_Debug CMakeFiles/libtest.dir/test/
 
 build cmake_object_order_depends_target_main: phony || cmake_object_order_depends_target_core
 
-build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main_Debug ../main.cpp || cmake_object_order_depends_target_main
-  DEP_FILE = CMakeFiles/main.dir/main.cpp.o.d
+build CMakeFiles/main.dir/Main.cpp.o: CXX_COMPILER__main_Debug ../Main.cpp || cmake_object_order_depends_target_main
+  DEP_FILE = CMakeFiles/main.dir/Main.cpp.o.d
   FLAGS = -g -pthread -fopenmp=libomp -std=gnu++17
   INCLUDES = -I../include -isystem /usr/local/include/SEAL-3.5
   OBJECT_DIR = CMakeFiles/main.dir
@@ -114,7 +114,7 @@ build CMakeFiles/main.dir/main.cpp.o: CXX_COMPILER__main_Debug ../main.cpp || cm
 #############################################
 # Link the executable main
 
-build main: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
+build main: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/Main.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
   FLAGS = -g
   LINK_LIBRARIES = libcore.a  /usr/local/lib/libseal-3.5.a  -pthread  /usr/lib/x86_64-linux-gnu/libomp.so  -lpthread
   OBJECT_DIR = CMakeFiles/main.dir

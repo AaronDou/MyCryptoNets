@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "libtest"
+			"path" : "main"
 		}
 	],
 	"backtrace" : 1,
@@ -26,19 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 24,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 25,
+				"line" : 19,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 26,
+				"line" : 20,
 				"parent" : 0
 			}
 		]
@@ -89,7 +89,7 @@
 			"id" : "core::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "libtest::@6890427a1f51a3e7e1df",
+	"id" : "main::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -104,16 +104,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-lgtest_main",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
 				"fragment" : "libcore.a",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lgtest",
 				"role" : "libraries"
 			},
 			{
@@ -135,8 +126,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "libtest",
-	"nameOnDisk" : "libtest",
+	"name" : "main",
+	"nameOnDisk" : "main",
 	"paths" : 
 	{
 		"build" : ".",
@@ -157,7 +148,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "test/tests.cpp",
+			"path" : "Main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

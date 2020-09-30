@@ -1,5 +1,5 @@
 
-#include "core.h"
+#include "NeuralNetworks.h"
 
 using namespace std;
 using namespace seal;

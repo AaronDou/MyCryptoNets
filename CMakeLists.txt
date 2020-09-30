@@ -6,14 +6,16 @@ set(CMAKE_CXX_STANDARD 14)
 find_package(SEAL 3.5 REQUIRED)
 find_package(OpenMP)
 
-add_library(core include/core.h include/util.h)
+
+file(GLOB libfiles "include/*.h" "include/*.cpp")
+add_library(core ${libfiles})
 target_link_libraries(core PUBLIC SEAL::seal)
 if(OpenMP_CXX_FOUND)
     target_link_libraries(core PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
 
-add_executable(main main.cpp)
+add_executable(main Main.cpp)
 target_link_libraries(main PUBLIC core)
 target_include_directories(main
     PUBLIC 
@@ -21,7 +23,7 @@ target_include_directories(main
 )
 
 
-add_executable(libtest test/tests.cpp)
+add_executable(libtest test/Tests.cpp)
 target_link_libraries(libtest gtest_main core)
 target_include_directories(libtest
     PUBLIC 

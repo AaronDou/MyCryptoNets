@@ -25,7 +25,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 9,
+				"line" : 11,
 				"parent" : 0
 			}
 		]
@@ -45,7 +45,8 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -53,12 +54,17 @@
 	[
 		{
 			"backtrace" : 1,
-			"path" : "include/core.h",
+			"path" : "include/HEWrapper.h",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/util.h",
+			"path" : "include/NeuralNetworks.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Util.h",
 			"sourceGroupIndex" : 0
 		}
 	],
