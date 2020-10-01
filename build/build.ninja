@@ -58,37 +58,70 @@ build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
 build edit_cache: phony CMakeFiles/edit_cache.util
 
 # =============================================================================
-# Object build statements for EXECUTABLE target libtest
+# Object build statements for EXECUTABLE target nn_test
 
 
 #############################################
-# Order-only phony target for libtest
+# Order-only phony target for nn_test
 
-build cmake_object_order_depends_target_libtest: phony || cmake_object_order_depends_target_core
+build cmake_object_order_depends_target_nn_test: phony || cmake_object_order_depends_target_core
 
-build CMakeFiles/libtest.dir/test/Tests.cpp.o: CXX_COMPILER__libtest_Debug ../test/Tests.cpp || cmake_object_order_depends_target_libtest
-  DEP_FILE = CMakeFiles/libtest.dir/test/Tests.cpp.o.d
+build CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o: CXX_COMPILER__nn_test_Debug ../test/NeuralNetworksTest.cpp || cmake_object_order_depends_target_nn_test
+  DEP_FILE = CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o.d
   FLAGS = -g -pthread -fopenmp=libomp -std=gnu++17
   INCLUDES = -I../include -isystem /usr/local/include/SEAL-3.5
-  OBJECT_DIR = CMakeFiles/libtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/libtest.dir/test
+  OBJECT_DIR = CMakeFiles/nn_test.dir
+  OBJECT_FILE_DIR = CMakeFiles/nn_test.dir/test
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target libtest
+# Link build statements for EXECUTABLE target nn_test
 
 
 #############################################
-# Link the executable libtest
+# Link the executable nn_test
 
-build libtest: CXX_EXECUTABLE_LINKER__libtest_Debug CMakeFiles/libtest.dir/test/Tests.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
+build nn_test: CXX_EXECUTABLE_LINKER__nn_test_Debug CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
   FLAGS = -g
   LINK_LIBRARIES = -lgtest_main  libcore.a  -lgtest  /usr/local/lib/libseal-3.5.a  -pthread  /usr/lib/x86_64-linux-gnu/libomp.so  -lpthread
-  OBJECT_DIR = CMakeFiles/libtest.dir
+  OBJECT_DIR = CMakeFiles/nn_test.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = libtest
-  TARGET_PDB = libtest.dbg
+  TARGET_FILE = nn_test
+  TARGET_PDB = nn_test.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target wrapper_test
+
+
+#############################################
+# Order-only phony target for wrapper_test
+
+build cmake_object_order_depends_target_wrapper_test: phony || cmake_object_order_depends_target_core
+
+build CMakeFiles/wrapper_test.dir/test/HEWrapperTest.cpp.o: CXX_COMPILER__wrapper_test_Debug ../test/HEWrapperTest.cpp || cmake_object_order_depends_target_wrapper_test
+  DEP_FILE = CMakeFiles/wrapper_test.dir/test/HEWrapperTest.cpp.o.d
+  FLAGS = -g -pthread -fopenmp=libomp -std=gnu++17
+  INCLUDES = -I../include -isystem /usr/local/include/SEAL-3.5
+  OBJECT_DIR = CMakeFiles/wrapper_test.dir
+  OBJECT_FILE_DIR = CMakeFiles/wrapper_test.dir/test
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target wrapper_test
+
+
+#############################################
+# Link the executable wrapper_test
+
+build wrapper_test: CXX_EXECUTABLE_LINKER__wrapper_test_Debug CMakeFiles/wrapper_test.dir/test/HEWrapperTest.cpp.o | libcore.a /usr/local/lib/libseal-3.5.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
+  FLAGS = -g
+  LINK_LIBRARIES = -lgtest_main  libcore.a  -lgtest  /usr/local/lib/libseal-3.5.a  -pthread  /usr/lib/x86_64-linux-gnu/libomp.so  -lpthread
+  OBJECT_DIR = CMakeFiles/wrapper_test.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = wrapper_test
+  TARGET_PDB = wrapper_test.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target main
@@ -161,7 +194,7 @@ build core: phony libcore.a
 #############################################
 # Folder: /home/aaron/Dropbox/Projects/MyCryptoNets/build
 
-build all: phony libtest main libcore.a
+build all: phony nn_test wrapper_test main libcore.a
 
 # =============================================================================
 # Built-in targets

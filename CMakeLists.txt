@@ -23,9 +23,16 @@ target_include_directories(main
 )
 
 
-add_executable(libtest test/Tests.cpp)
-target_link_libraries(libtest gtest_main core)
-target_include_directories(libtest
+add_executable(wrapper_test test/HEWrapperTest.cpp)
+target_link_libraries(wrapper_test gtest_main core)
+target_include_directories(wrapper_test
+    PUBLIC 
+        ${PROJECT_SOURCE_DIR}/include
+)
+
+add_executable(nn_test test/NeuralNetworksTest.cpp)
+target_link_libraries(nn_test gtest_main core)
+target_include_directories(nn_test
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include
 )

@@ -1,8 +1,13 @@
 [
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
-  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/libtest.dir/test/Tests.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/Tests.cpp",
-  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/Tests.cpp"
+  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp",
+  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp"
+},
+{
+  "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/wrapper_test.dir/test/HEWrapperTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/HEWrapperTest.cpp",
+  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/HEWrapperTest.cpp"
 },
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
