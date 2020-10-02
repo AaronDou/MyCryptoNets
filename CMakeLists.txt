@@ -14,18 +14,25 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(core PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-
-add_executable(main Main.cpp)
-target_link_libraries(main PUBLIC core)
-target_include_directories(main
+file(GLOB cryptonets_files "apps/cryptonets/*.h" "apps/cryptonets/*.cpp")
+add_executable(cryptonets ${cryptonets_files})
+target_link_libraries(cryptonets PUBLIC core)
+target_include_directories(cryptonets
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include
 )
 
 
-add_executable(wrapper_test test/HEWrapperTest.cpp)
+add_executable(wrapper_test test/SealBfvCrtWrapperTest.cpp)
 target_link_libraries(wrapper_test gtest_main core)
 target_include_directories(wrapper_test
+    PUBLIC 
+        ${PROJECT_SOURCE_DIR}/include
+)
+
+add_executable(vector_test test/SealBfvVectorTest.cpp)
+target_link_libraries(vector_test gtest_main core)
+target_include_directories(vector_test
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include
 )

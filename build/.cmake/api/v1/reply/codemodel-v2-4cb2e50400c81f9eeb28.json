@@ -1,0 +1,95 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "MyCryptoNets",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "core::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-core-Debug-f7e21be66662ddb200af.json",
+					"name" : "core",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "cryptonets::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cryptonets-Debug-aaaeef8ae9d1d58718e0.json",
+					"name" : "cryptonets",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "nn_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-nn_test-Debug-3ffd479052923a66fb83.json",
+					"name" : "nn_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vector_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vector_test-Debug-64f88c69a7e64b01aa78.json",
+					"name" : "vector_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "wrapper_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-wrapper_test-Debug-e92794c1a1a113914265.json",
+					"name" : "wrapper_test",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+		"source" : "/home/aaron/Dropbox/Projects/MyCryptoNets"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

@@ -1,4 +1,4 @@
-#include "HEWrapper.h"
+#include "SealBfvCrtWrapper.h"
 
 namespace mycryptonets
 {
@@ -73,16 +73,6 @@ namespace mycryptonets
 
         return weights;
     }
-
-//     void square(SealBFVEnvironment &env, vector<Ciphertext> &input)
-//     {
-// #pragma omp parallel for
-//         for (size_t i = 0; i < input.size(); i++)
-//         {
-//             env.evaluatorPtr->square_inplace(input[i]);
-//             env.evaluatorPtr->relinearize_inplace(input[i], env.relin_keys);
-//         }
-//     }
 
 //     vector<Ciphertext> fc(SealBFVEnvironment &env,
 //                           const vector<Ciphertext> &input,

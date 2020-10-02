@@ -5,20 +5,21 @@
 using namespace std;
 using namespace seal;
 using namespace mycryptonets;
+using namespace testing;
 
-// class MyCryptoNetsTest : public ::testing::Test
-// {
+class NeuralNetworksTest : public ::testing::Test
+{
 
-// protected:
-//     MyCryptoNetsTest()
-//     {
-//         envPtr = make_shared<SealBFVEnvironment>(8192, 549764251649);
-//     }
+protected:
+    NeuralNetworksTest()
+    {
+        env = SealBfvEnvironment(8192, {549764251649, 549764284417});
+    }
 
-//     virtual ~MyCryptoNetsTest() {}
+    virtual ~NeuralNetworksTest() {}
 
-//     shared_ptr<SealBFVEnvironment> envPtr;
-// };
+    SealBfvEnvironment env;
+};
 
 // TEST_F(MyCryptoNetsTest, Square)
 // {
@@ -53,7 +54,7 @@ using namespace mycryptonets;
 //     print_matrix(decoded);
 // }
 
-// TEST_F(MyCryptoNetsTest, FC)
+// TEST_F(NeuralNetworksTest, FC)
 // {
 //     vector<vector<uint64_t>> matrix_p{
 //         {3ULL, 1ULL, 2ULL},
@@ -63,17 +64,17 @@ using namespace mycryptonets;
 //     auto encoded = encode(*envPtr, matrix_p);
 //     auto encrypted = encrypt(*envPtr, encoded);
 
-//     Plaintext weight00 {"1"};
-//     Plaintext weight01 {"2"};
-//     Plaintext weight02 {"3"};
-//     Plaintext weight10 {"2"};
-//     Plaintext weight11 {"1"};
-//     Plaintext weight12 {"1"};
-//     vector<Plaintext> weights {weight00, weight01, weight02, weight10, weight11, weight12};
+//     Plaintext weight00{"1"};
+//     Plaintext weight01{"2"};
+//     Plaintext weight02{"3"};
+//     Plaintext weight10{"2"};
+//     Plaintext weight11{"1"};
+//     Plaintext weight12{"1"};
+//     vector<Plaintext> weights{weight00, weight01, weight02, weight10, weight11, weight12};
 
-//     Plaintext bias0 {"5"};
-//     Plaintext bias1 {"2"};
-//     vector<Plaintext> biases {bias0, bias1};
+//     Plaintext bias0{"5"};
+//     Plaintext bias1{"2"};
+//     vector<Plaintext> biases{bias0, bias1};
 
 //     auto result = fc(*envPtr, encrypted, weights, biases, 3);
 
