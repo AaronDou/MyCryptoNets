@@ -1,5 +1,6 @@
 
 #include "NeuralNetworks.h"
+#include "DataPreprocess.h"
 
 using namespace std;
 using namespace seal;

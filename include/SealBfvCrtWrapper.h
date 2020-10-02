@@ -93,7 +93,8 @@ namespace mycryptonets
         vector<BigUInt> preComputedCoefficients;
     };
 
-    vector<uint64_t> splitBigNumbers(double num, double scale, const SealBfvEnvironment &env)
+    vector<uint64_t> splitBigNumbers(
+        double num, double scale, const SealBfvEnvironment &env)
     {
         size_t envCount = env.environments.size();
         vector<uint64_t> res(envCount, 0);
@@ -211,12 +212,20 @@ namespace mycryptonets
 
         ~SealBfvPlaintext() {}
 
+        bool is_zero()
+        {
+            return all_of(pVectors.begin(),
+                          pVectors.end(),
+                          [](Plaintext &p) { return p.is_zero(); });
+        }
+
         vector<Plaintext> pVectors;
         double scale;
     };
 
-    void square_inplace(SealBfvCiphertext &ciphertext,
-                        const SealBfvEnvironment &env)
+    void square_inplace(
+        SealBfvCiphertext &ciphertext,
+        const SealBfvEnvironment &env)
     {
 
         for (size_t i = 0; i < env.environments.size(); i++)
@@ -227,10 +236,11 @@ namespace mycryptonets
         ciphertext.scale *= ciphertext.scale;
     }
 
-    void multiply_plain(const SealBfvCiphertext &ciphertext,
-                        const SealBfvPlaintext &plaintext,
-                        SealBfvCiphertext &destination,
-                        const SealBfvEnvironment &env)
+    void multiply_plain(
+        const SealBfvCiphertext &ciphertext,
+        const SealBfvPlaintext &plaintext,
+        SealBfvCiphertext &destination,
+        const SealBfvEnvironment &env)
     {
         size_t envCount = env.environments.size();
         vector<Ciphertext> eVectors(envCount, Ciphertext());
@@ -247,9 +257,10 @@ namespace mycryptonets
         destination.batchSize = ciphertext.batchSize;
     }
 
-    void add_many(const vector<SealBfvCiphertext> &ciphertexts,
-                  SealBfvCiphertext &destination,
-                  const SealBfvEnvironment &env)
+    void add_many(
+        const vector<SealBfvCiphertext> &ciphertexts,
+        SealBfvCiphertext &destination,
+        const SealBfvEnvironment &env)
     {
         assert(ciphertexts.size() > 0);
         //TODO assert all the scales are equal
@@ -270,9 +281,10 @@ namespace mycryptonets
         destination.batchSize = ciphertexts[0].batchSize;
     }
 
-    void add_plain_inplace(SealBfvCiphertext &ciphertext,
-                           const SealBfvPlaintext &plaintext,
-                           const SealBfvEnvironment &env)
+    void add_plain_inplace(
+        SealBfvCiphertext &ciphertext,
+        const SealBfvPlaintext &plaintext,
+        const SealBfvEnvironment &env)
     {
         assert(ciphertext.scale == plaintext.scale);
 

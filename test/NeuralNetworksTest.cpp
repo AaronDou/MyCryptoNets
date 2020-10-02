@@ -21,71 +21,53 @@ protected:
     SealBfvEnvironment env;
 };
 
-// TEST_F(MyCryptoNetsTest, Square)
-// {
-//     vector<vector<uint64_t>> matrix_p{
-//         {3ULL, 1ULL, 2ULL},
-//         {2ULL, 1ULL, 2ULL},
-//         {1ULL, 1ULL, 2ULL},
-//     };
-//     auto encoded = encode(*envPtr, matrix_p);
-//     auto encrypted = encrypt(*envPtr, encoded);
+TEST_F(NeuralNetworksTest, FC)
+{
+    vector<vector<double>> data{
+        {8.5, -4.4, 0},
+        {700, -0.05, 5.888},
+        {41, -0.0001, 55558}};
+    vector<SealBfvCiphertext> ciphertexts;
+    encrypt(data, ciphertexts, env, 10000);
 
-//     square(*envPtr, encrypted);
+    SealBfvPlaintext weight00{-6, env, 100};
+    SealBfvPlaintext weight01{0, env, 100};
+    SealBfvPlaintext weight02{10.54, env, 100};
+    SealBfvPlaintext weight10{8.4, env, 100};
+    SealBfvPlaintext weight11{-99.99, env, 100};
+    SealBfvPlaintext weight12{1001, env, 100};
 
-//     auto decrypted = decrypt(*envPtr, encrypted);
-//     auto decoded = decode(*envPtr, decrypted);
-//     print_matrix(decoded);
-// }
+    vector<SealBfvPlaintext> weights{weight00, weight01, weight02,
+                                     weight10, weight11, weight12};
 
-// TEST_F(MyCryptoNetsTest, WeightEncoding)
-// {
-//     vector<vector<uint64_t>> matrix_p{
-//         {3ULL, 1ULL, 2ULL},
-//     };
-//     auto encoded = encode(*envPtr, matrix_p);
-//     auto encrypted = encrypt(*envPtr, encoded);
+    SealBfvPlaintext bias0{-6.66666, env, 1000000};
+    SealBfvPlaintext bias1{18888, env, 1000000};
+    vector<SealBfvPlaintext> biases{bias0, bias1};
 
-//     Plaintext p1 {"3"};
-//     envPtr->evaluatorPtr->multiply_plain_inplace(encrypted[0], p1);
+    vector<SealBfvCiphertext> destination;
+
+    fc(getPointers(ciphertexts),
+       getPointers(weights),
+       getPointers(biases),
+       3,
+       destination,
+       env);
     
-//     auto decrypted = decrypt(*envPtr, encrypted);
-//     auto decoded = decode(*envPtr, decrypted);
-//     print_matrix(decoded);
-// }
+    vector<vector<double>> res;
+    decrypt(destination, res, env);
 
-// TEST_F(NeuralNetworksTest, FC)
-// {
-//     vector<vector<uint64_t>> matrix_p{
-//         {3ULL, 1ULL, 2ULL},
-//         {2ULL, 1ULL, 2ULL},
-//         {1ULL, 1ULL, 2ULL},
-//     };
-//     auto encoded = encode(*envPtr, matrix_p);
-//     auto encrypted = encrypt(*envPtr, encoded);
+    vector<vector<double>> expected {
+        {374.47334, 19.732286, 585574.65334}, 
+        {-9992.6, 18855.9394,  55631857.258879997},
+    };
 
-//     Plaintext weight00{"1"};
-//     Plaintext weight01{"2"};
-//     Plaintext weight02{"3"};
-//     Plaintext weight10{"2"};
-//     Plaintext weight11{"1"};
-//     Plaintext weight12{"1"};
-//     vector<Plaintext> weights{weight00, weight01, weight02, weight10, weight11, weight12};
-
-//     Plaintext bias0{"5"};
-//     Plaintext bias1{"2"};
-//     vector<Plaintext> biases{bias0, bias1};
-
-//     auto result = fc(*envPtr, encrypted, weights, biases, 3);
-
-//     auto decrypted = decrypt(*envPtr, result);
-//     auto decoded = decode(*envPtr, decrypted);
-//     print_matrix(decoded);
-//     /*
-//     [ 15, 11, 17, 5, ..., 5, 5, 5, 5 ]
-//     [ 11, 6, 10, 2, ..., 2, 2, 2, 2 ]
-//     */
-// }
+    EXPECT_DOUBLE_EQ(res[0][0], expected[0][0]);
+    EXPECT_DOUBLE_EQ(res[0][1], expected[0][1]);
+    EXPECT_DOUBLE_EQ(res[0][2], expected[0][2]);
+    EXPECT_DOUBLE_EQ(res[1][0], expected[1][0]);
+    EXPECT_DOUBLE_EQ(res[1][1], expected[1][1]);
+    EXPECT_DOUBLE_EQ(res[1][2], expected[1][2]);
+}
 
 int main(int argc, char **argv)
 {

@@ -83,6 +83,14 @@ TEST_F(SealBfvCrtWrapper, AddPlainInplace)
     EXPECT_EQ(bfvCiphertext.decrypt(env), (vector<double>{2.5, 3.6, -3.8, 1.5}));
 }
 
+TEST_F(SealBfvCrtWrapper, IsZero)
+{
+    SealBfvPlaintext plaintext1(1.5, env, 2);
+    EXPECT_EQ(plaintext1.is_zero(), false);
+
+    SealBfvPlaintext plaintext2(0.0, env, 2);
+    EXPECT_EQ(plaintext2.is_zero(), true);
+}
 
 int main(int argc, char **argv)
 {

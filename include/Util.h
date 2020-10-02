@@ -101,4 +101,11 @@ namespace mycryptonets
         return stream.str();
     }
 
+    template <typename T>
+    vector<T *> getPointers(vector<T> x)
+    {
+        vector<T *> y;
+        transform(x.begin(), x.end(), back_inserter(y), [](T &c) { return &c; });
+        return y;
+    }
 } // namespace mycryptonets
