@@ -1,4 +1,5 @@
 #include <vector>
+#include <math.h>
 
 namespace mycryptonets
 {
@@ -14,8 +15,8 @@ namespace mycryptonets
 
     void readInput(size_t batchSize,
                    double normalizationFactor,
-                   vector<vector<vector<double>>>& data,
-                   vector<vector<size_t>>& labels)
+                   vector<vector<vector<double>>> &data,
+                   vector<vector<size_t>> &labels)
     {
         size_t numRows = 28 * 28;
         size_t batch = 2;
@@ -47,7 +48,7 @@ namespace mycryptonets
 
     Params readParams()
     {
-        ifstream infile("../apps/cryptonets/resources/MyWeights.txt");
+        ifstream infile("../apps/cryptonets/resources/LinerWeights.txt");
         assert(infile.is_open());
 
         Params params;
