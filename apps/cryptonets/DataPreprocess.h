@@ -15,7 +15,7 @@ namespace mycryptonets
     void readInput(size_t batchSize,
                    double normalizationFactor,
                    vector<vector<vector<double>>>& data,
-                   vector<vector<double>>& labels)
+                   vector<vector<size_t>>& labels)
     {
         size_t numRows = 28 * 28;
         size_t batch = 2;
@@ -23,7 +23,7 @@ namespace mycryptonets
         vector<double> pixelBatch(batchSize, 0.0);
         vector<vector<double>> imageBatch(numRows, pixelBatch);
         data = vector<vector<vector<double>>>(batch, imageBatch);
-        labels = vector<vector<double>>(batch, vector<double>(batchSize, 0));
+        labels = vector<vector<size_t>>(batch, vector<size_t>(batchSize, 0));
 
         ifstream infile("../apps/cryptonets/resources/MNIST-28x28-test.txt");
         assert(infile.is_open());
@@ -47,7 +47,7 @@ namespace mycryptonets
 
     Params readParams()
     {
-        ifstream infile("../apps/cryptonets/resources/LinerWeights.txt");
+        ifstream infile("../apps/cryptonets/resources/MyWeights.txt");
         assert(infile.is_open());
 
         Params params;

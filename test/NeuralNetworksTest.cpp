@@ -30,7 +30,7 @@ TEST_F(NeuralNetworksTest, FC)
     vector<SealBfvCiphertext> ciphertexts;
     encrypt_vec(data, ciphertexts, env, 10000);
 
-    vector<double> weights {-6, 0, 10.54, 8.4, -99.99, 1001};
+    vector<double> weights{-6, 0, 10.54, 8.4, -99.99, 1001};
     vector<SealBfvPlaintext> weightsP;
     singleCoefficientEncode_vec(weights, weightsP, env, 100);
 
@@ -43,7 +43,7 @@ TEST_F(NeuralNetworksTest, FC)
     fc(getPointers(ciphertexts),
        weightsP,
        biases,
-       3,
+       data.size(),
        destination,
        env);
 
@@ -82,15 +82,14 @@ TEST_F(NeuralNetworksTest, Convolution)
     vector<SealBfvCiphertext *> dataEPtr;
     convolutionOrganizer(dataE, 3, 2, 2, dataEPtr);
 
-    vector<double> weights {
+    vector<double> weights{
         -6, 0, 1,
         5, -7, 6,
         -7, 10, 8,
         /* kernel separator*/
         5, 0, 1,
         5, -7, 6,
-        -7, 10, 8
-    };
+        -7, 10, 8};
     vector<SealBfvPlaintext> weightsP;
     singleCoefficientEncode_vec(weights, weightsP, env, 100);
 
@@ -113,6 +112,19 @@ TEST_F(NeuralNetworksTest, Convolution)
     vector<vector<double>> expected{
         {7}, {48}, {25}, {-32}, {-4}, {13}, {-36}, {-1}, {5}, {65}, {73}, {28}, {59}, {32}, {27}, {33}, {2}, {-3}};
     EXPECT_EQ(res, expected);
+}
+
+TEST_F(NeuralNetworksTest, HardMax)
+{
+    vector<vector<int>> data = {
+        {1, 9, -10, 4, -2},
+        {9, -1, -5, 6, 5},
+        {-1, -4, -9, 1, 9},
+        {-6, -8, 0, 3, -7},
+        {7, -8, 3, -2, 2}
+    };
+    vector<size_t> expected {1, 0, 4, 1, 2};
+    EXPECT_EQ(hardmax(data), expected);
 }
 
 int main(int argc, char **argv)

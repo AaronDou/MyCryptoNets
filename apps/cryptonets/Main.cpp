@@ -45,10 +45,10 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         decor(dataE, env);
     }
 
-    // FC Layer
+    // FC1 Layer
     {
         vector<SealBfvCiphertext> resultE;
-        double scale = 32.0 * 32.0; // Needs to be slightly larger because the weights are smaller.
+        double scale = 32.0 * 32.0;
         auto decor = make_decorator(fc, "FC1");
 
         vector<SealBfvPlaintext> WeightsP;
@@ -74,7 +74,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         decor(dataE, env);
     }
 
-    // FC Layer
+    // FC2 Layer
     {
         vector<SealBfvCiphertext> resultE;
         double scale = 32.0;
@@ -112,13 +112,27 @@ int main()
     auto params = readParams();
 
     vector<vector<vector<double>>> data;
-    vector<vector<double>> labels;
+    vector<vector<size_t>> labels;
     readInput(poly_modulus_degree, 1.0 / 256.0, data, labels);
 
     // Batch processing
+
+    size_t correct = 0;
     for (size_t batchIndex = 0; batchIndex < data.size(); batchIndex++)
     {
         auto res = cryptonets(params, data[batchIndex], env);
+        auto predictions = hardmax(res);
+
+        for (size_t i = 0; i < predictions.size(); i++)
+        {
+            if (predictions[i] == labels[batchIndex][i])
+            {
+                correct++;
+            }
+        }
+
+        cout << "Accuracy is " << correct << "/" << poly_modulus_degree << endl;
+
         break;
     }
 
