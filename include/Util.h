@@ -1,6 +1,9 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <functional>
+#include <chrono>
+#include <iostream>
 
 using namespace std;
 
@@ -107,5 +110,39 @@ namespace mycryptonets
         vector<T *> y;
         transform(x.begin(), x.end(), back_inserter(y), [](T &c) { return &c; });
         return y;
+    }
+
+    template <class>
+    struct ExeTime;
+
+    // Execution time decorator
+    template <class... Args>
+    struct ExeTime<void(Args...)>
+    {
+    public:
+        ExeTime(std::function<void(Args...)> func, string desc) : f_(func), desc(desc) {}
+
+        void operator()(Args... args)
+        {
+            std::chrono::time_point<std::chrono::steady_clock> start, end;
+            std::chrono::duration<double> elapsed_seconds;
+
+            start = std::chrono::steady_clock::now();
+            f_(args...);
+            end = std::chrono::steady_clock::now();
+            elapsed_seconds = end - start;
+            std::cout << setw(20) << desc << " took ";
+            std::cout << elapsed_seconds.count() << " seconds" << std::endl;
+        }
+
+    private:
+        std::function<void(Args...)> f_;
+        std::string desc;
+    };
+
+    template <class... Args>
+    ExeTime<void(Args...)> make_decorator(void (*f)(Args...), string desc)
+    {
+        return ExeTime<void(Args...)>(std::function<void(Args...)>(f), desc);
     }
 } // namespace mycryptonets

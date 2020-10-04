@@ -31,7 +31,7 @@ TEST_F(SealBfvVectorTest, EncryptionRoundTrip) {
     vector<vector<double>> decrypted;
     decrypt(ciphertexts, decrypted, env);
     EXPECT_EQ(data, decrypted);
-}   
+}
 
 TEST_F(SealBfvVectorTest, SquareInplace) {
     vector<vector<double>> data {
@@ -49,7 +49,7 @@ TEST_F(SealBfvVectorTest, SquareInplace) {
         {10000*10000, 55555.0*55555, 0.005*0.005},
     }; 
     EXPECT_EQ(decrypted, expected);
-}   
+}
 
 int main(int argc, char **argv)
 {
