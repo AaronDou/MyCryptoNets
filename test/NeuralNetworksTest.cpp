@@ -28,17 +28,11 @@ TEST_F(NeuralNetworksTest, FC)
         {700, -0.05, 5.888},
         {41, -0.0001, 55558}};
     vector<SealBfvCiphertext> ciphertexts;
-    encrypt(data, ciphertexts, env, 10000);
+    encrypt_vec(data, ciphertexts, env, 10000);
 
-    SealBfvPlaintext weight00{-6, env, 100};
-    SealBfvPlaintext weight01{0, env, 100};
-    SealBfvPlaintext weight02{10.54, env, 100};
-    SealBfvPlaintext weight10{8.4, env, 100};
-    SealBfvPlaintext weight11{-99.99, env, 100};
-    SealBfvPlaintext weight12{1001, env, 100};
-
-    vector<SealBfvPlaintext> weights{weight00, weight01, weight02,
-                                     weight10, weight11, weight12};
+    vector<double> weights {-6, 0, 10.54, 8.4, -99.99, 1001};
+    vector<SealBfvPlaintext> weightsP;
+    singleCoefficientEncode_vec(weights, weightsP, env, 100);
 
     SealBfvPlaintext bias0{-6.66666, env, 1000000};
     SealBfvPlaintext bias1{18888, env, 1000000};
@@ -47,14 +41,14 @@ TEST_F(NeuralNetworksTest, FC)
     vector<SealBfvCiphertext> destination;
 
     fc(getPointers(ciphertexts),
-       weights,
+       weightsP,
        biases,
        3,
        destination,
        env);
 
     vector<vector<double>> res;
-    decrypt(destination, res, env);
+    decrypt_vec(destination, res, env);
 
     vector<vector<double>> expected{
         {374.47334, 19.732286, 585574.65334},
@@ -84,36 +78,21 @@ TEST_F(NeuralNetworksTest, Convolution)
 {
     vector<vector<double>> data = {{6}, {1}, {3}, {4}, {1}, /**/ {8}, {0}, {1}, {3}, {8}, /**/ {9}, {2}, {4}, {4}, {2}, /**/ {8}, {4}, {2}, {2}, {4}, /**/ {7}, {3}, {1}, {0}, {0}};
     vector<SealBfvCiphertext> dataE;
-    encrypt(data, dataE, env, 10);
+    encrypt_vec(data, dataE, env, 10);
     vector<SealBfvCiphertext *> dataEPtr;
     convolutionOrganizer(dataE, 3, 2, 2, dataEPtr);
 
-    SealBfvPlaintext weight000{-6, env, 100};
-    SealBfvPlaintext weight001{0, env, 100};
-    SealBfvPlaintext weight002{1, env, 100};
-    SealBfvPlaintext weight010{5, env, 100};
-    SealBfvPlaintext weight011{-7, env, 100};
-    SealBfvPlaintext weight012{6, env, 100};
-    SealBfvPlaintext weight020{-7, env, 100};
-    SealBfvPlaintext weight021{10, env, 100};
-    SealBfvPlaintext weight022{8, env, 100};
-
-    SealBfvPlaintext weight100{5, env, 100}; // only this entry different
-    SealBfvPlaintext weight101{0, env, 100};
-    SealBfvPlaintext weight102{1, env, 100};
-    SealBfvPlaintext weight110{5, env, 100};
-    SealBfvPlaintext weight111{-7, env, 100};
-    SealBfvPlaintext weight112{6, env, 100};
-    SealBfvPlaintext weight120{-7, env, 100};
-    SealBfvPlaintext weight121{10, env, 100};
-    SealBfvPlaintext weight122{8, env, 100};
-
-    vector<SealBfvPlaintext> weights{weight000, weight001, weight002,
-                                     weight010, weight011, weight012,
-                                     weight020, weight021, weight022,
-                                     weight100, weight101, weight102,
-                                     weight110, weight111, weight112,
-                                     weight120, weight121, weight122};
+    vector<double> weights {
+        -6, 0, 1,
+        5, -7, 6,
+        -7, 10, 8,
+        /* kernel separator*/
+        5, 0, 1,
+        5, -7, 6,
+        -7, 10, 8
+    };
+    vector<SealBfvPlaintext> weightsP;
+    singleCoefficientEncode_vec(weights, weightsP, env, 100);
 
     SealBfvPlaintext bias0{5, env, 1000};
     SealBfvPlaintext bias1{-3, env, 1000};
@@ -122,14 +101,14 @@ TEST_F(NeuralNetworksTest, Convolution)
     vector<SealBfvCiphertext> destination;
 
     fc(dataEPtr,
-       weights,
+       weightsP,
        biases,
        9,
        destination,
        env);
 
     vector<vector<double>> res;
-    decrypt(destination, res, env);
+    decrypt_vec(destination, res, env);
 
     vector<vector<double>> expected{
         {7}, {48}, {25}, {-32}, {-4}, {13}, {-36}, {-1}, {5}, {65}, {73}, {28}, {59}, {32}, {27}, {33}, {2}, {-3}};

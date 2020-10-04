@@ -2,7 +2,7 @@
 
 namespace mycryptonets
 {
-    struct Weights
+    struct Params
     {
         vector<double> convWeights;
         vector<double> convBiases;
@@ -45,32 +45,32 @@ namespace mycryptonets
         infile.close();
     }
 
-    Weights readWeights()
+    Params readParams()
     {
         ifstream infile("../apps/cryptonets/resources/LinerWeights.txt");
         assert(infile.is_open());
 
-        Weights weights;
+        Params params;
         string line;
 
         getline(infile, line);
-        weights.convWeights = split(line, ' ');
+        params.convWeights = split(line, ' ');
 
         getline(infile, line);
-        weights.convBiases = split(line, ' ');
+        params.convBiases = split(line, ' ');
 
         getline(infile, line);
-        weights.FC1Weights = split(line, ' ');
+        params.FC1Weights = split(line, ' ');
         getline(infile, line);
-        weights.FC1Biases = split(line, ' ');
+        params.FC1Biases = split(line, ' ');
 
         getline(infile, line);
-        weights.FC2Weights = split(line, ' ');
+        params.FC2Weights = split(line, ' ');
         getline(infile, line);
-        weights.FC2Biases = split(line, ' ');
+        params.FC2Biases = split(line, ' ');
 
         infile.close();
 
-        return weights;
+        return params;
     }
 }; // namespace mycryptonets

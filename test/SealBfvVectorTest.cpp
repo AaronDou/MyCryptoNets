@@ -27,9 +27,9 @@ TEST_F(SealBfvVectorTest, EncryptionRoundTrip) {
         {10000, -55555, 0.005},
     };
     vector<SealBfvCiphertext> ciphertexts;
-    encrypt(data, ciphertexts, env, 10000);
+    encrypt_vec(data, ciphertexts, env, 10000);
     vector<vector<double>> decrypted;
-    decrypt(ciphertexts, decrypted, env);
+    decrypt_vec(ciphertexts, decrypted, env);
     EXPECT_EQ(data, decrypted);
 }
 
@@ -39,10 +39,10 @@ TEST_F(SealBfvVectorTest, SquareInplace) {
         {10000, -55555, 0.005},
     };
     vector<SealBfvCiphertext> ciphertexts;
-    encrypt(data, ciphertexts, env, 10000);
-    square_inplace(ciphertexts, env);
+    encrypt_vec(data, ciphertexts, env, 10000);
+    square_inplace_vec(ciphertexts, env);
     vector<vector<double>> decrypted;
-    decrypt(ciphertexts, decrypted, env);
+    decrypt_vec(ciphertexts, decrypted, env);
 
     vector<vector<double>> expected {
         {4.2*4.2, 25, 0},
