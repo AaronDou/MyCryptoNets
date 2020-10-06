@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -247,7 +249,6 @@ namespace mycryptonets
 
         for (size_t i = 0; i < envCount; i++)
         {
-            Ciphertext temp;
             env.environments[i].evaluatorPtr->multiply_plain(ciphertext.eVectors[i],
                                                              plaintext.pVectors[i],
                                                              eVectors[i]);

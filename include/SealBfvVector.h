@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SealBfvCrtWrapper.h"
 
 namespace mycryptonets
@@ -14,7 +16,7 @@ namespace mycryptonets
     void encrypt_vec(const vector<vector<double>> &data,
                  vector<SealBfvCiphertext> &ciphertexts,
                  const SealBfvEnvironment &env,
-                 size_t scale = 1.0)
+                 double scale = 1.0)
     {
         size_t size = data.size();
         ciphertexts = vector<SealBfvCiphertext>(size, SealBfvCiphertext());
@@ -44,7 +46,7 @@ namespace mycryptonets
         const vector<double> &data,
         vector<SealBfvPlaintext> &plaintexts,
         const SealBfvEnvironment &env,
-        size_t scale = 1.0)
+        double scale = 1.0)
     {
         size_t size = data.size();
         plaintexts = vector<SealBfvPlaintext>(size, SealBfvPlaintext());

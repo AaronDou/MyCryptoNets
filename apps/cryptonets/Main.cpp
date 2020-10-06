@@ -67,6 +67,11 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         dataE = move(resultE);
     }
 
+    // Debugging
+    vector<vector<double>> temp;
+    decrypt_vec(dataE, temp, env);
+
+
     // Square activation layer
     {
         auto decor = make_decorator(square_inplace_vec, "Square");
