@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "wrapper_test"
+			"path" : "cryptonets"
 		}
 	],
 	"backtrace" : 1,
@@ -26,19 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 26,
+				"line" : 19,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 27,
+				"line" : 20,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 28,
+				"line" : 21,
 				"parent" : 0
 			}
 		]
@@ -77,7 +77,7 @@
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				0
+				1
 			]
 		}
 	],
@@ -88,7 +88,7 @@
 			"id" : "core::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "wrapper_test::@6890427a1f51a3e7e1df",
+	"id" : "cryptonets::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -103,16 +103,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-lgtest_main",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
 				"fragment" : "libcore.a",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lgtest",
 				"role" : "libraries"
 			},
 			{
@@ -134,8 +125,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "wrapper_test",
-	"nameOnDisk" : "wrapper_test",
+	"name" : "cryptonets",
+	"nameOnDisk" : "cryptonets",
 	"paths" : 
 	{
 		"build" : ".",
@@ -144,10 +135,17 @@
 	"sourceGroups" : 
 	[
 		{
-			"name" : "Source Files",
+			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
 				0
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1
 			]
 		}
 	],
@@ -155,9 +153,14 @@
 	[
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "test/SealBfvCrtWrapperTest.cpp",
+			"path" : "apps/cryptonets/DataPreprocess.h",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "apps/cryptonets/Main.cpp",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

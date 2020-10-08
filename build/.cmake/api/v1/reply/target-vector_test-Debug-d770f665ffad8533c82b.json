@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "cryptonets"
+			"path" : "vector_test"
 		}
 	],
 	"backtrace" : 1,
@@ -26,19 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 18,
+				"line" : 34,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 19,
+				"line" : 35,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 20,
+				"line" : 36,
 				"parent" : 0
 			}
 		]
@@ -77,7 +77,7 @@
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				1
+				0
 			]
 		}
 	],
@@ -88,7 +88,7 @@
 			"id" : "core::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "cryptonets::@6890427a1f51a3e7e1df",
+	"id" : "vector_test::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -103,7 +103,16 @@
 			},
 			{
 				"backtrace" : 2,
+				"fragment" : "-lgtest_main",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
 				"fragment" : "libcore.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lgtest",
 				"role" : "libraries"
 			},
 			{
@@ -125,8 +134,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "cryptonets",
-	"nameOnDisk" : "cryptonets",
+	"name" : "vector_test",
+	"nameOnDisk" : "vector_test",
 	"paths" : 
 	{
 		"build" : ".",
@@ -135,17 +144,10 @@
 	"sourceGroups" : 
 	[
 		{
-			"name" : "Header Files",
-			"sourceIndexes" : 
-			[
-				0
-			]
-		},
-		{
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				1
+				0
 			]
 		}
 	],
@@ -153,14 +155,9 @@
 	[
 		{
 			"backtrace" : 1,
-			"path" : "apps/cryptonets/DataPreprocess.h",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "apps/cryptonets/Main.cpp",
-			"sourceGroupIndex" : 1
+			"path" : "test/SealBfvVectorTest.cpp",
+			"sourceGroupIndex" : 0
 		}
 	],
 	"type" : "EXECUTABLE"

@@ -26,7 +26,7 @@ protected:
         auto public_key = keygen.public_key();
         auto secret_key = keygen.secret_key();
         relin_keys = keygen.relin_keys(60);
-        // auto relin_keys = keygen.relin_keys_local();
+        // relin_keys = keygen.relin_keys_local();
 
         encryptorPtr = make_shared<Encryptor>(context, public_key);
         decryptorPtr = make_shared<Decryptor>(context, secret_key);
