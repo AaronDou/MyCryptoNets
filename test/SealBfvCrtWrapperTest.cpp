@@ -29,15 +29,15 @@ TEST_F(SealBfvCrtWrapper, NoiseBudget)
     EncryptionParameters parms(scheme_type::BFV);
     parms.set_poly_modulus_degree(poly_modulus_degree);
     parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree)); 
-    
-    // parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 20)); // 146
-    parms.set_plain_modulus(plain_modulus); // 127
+    // parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+    parms.set_plain_modulus(plain_modulus);
 
     auto context = SEALContext::Create(parms);
     KeyGenerator keygen(context);
     auto public_key = keygen.public_key();
     auto secret_key = keygen.secret_key();
-    auto relin_keys = keygen.relin_keys(10);
+    auto relin_keys = keygen.relin_keys(60);
+    // auto relin_keys = keygen.relin_keys_local();
 
     Encryptor encryptor(context, public_key);
     Decryptor decryptor(context, secret_key);
@@ -45,16 +45,28 @@ TEST_F(SealBfvCrtWrapper, NoiseBudget)
     Evaluator evaluator(context);
     IntegerEncoder encoder(context);
 
-    vector<size_t> data {5};
+    vector<uint64_t> data(8192, 2);
     Plaintext temp;
     batchEncoder.encode(data, temp);
     Ciphertext dataE;
     encryptor.encrypt(temp, dataE);
+    cout << decryptor.invariant_noise_budget(dataE) << endl;
 
-    // int value1 = 5;
-    // Plaintext plain1 = encoder.encode(value1);
-    // Ciphertext dataE;
-    // encryptor.encrypt(plain1, dataE);
+    evaluator.square_inplace(dataE);
+    evaluator.relinearize_inplace(dataE, relin_keys);
+    cout << decryptor.invariant_noise_budget(dataE) << endl;
+
+    evaluator.square_inplace(dataE);
+    evaluator.relinearize_inplace(dataE, relin_keys);
+    cout << decryptor.invariant_noise_budget(dataE) << endl;
+
+    evaluator.square_inplace(dataE);
+    evaluator.relinearize_inplace(dataE, relin_keys);
+    cout << decryptor.invariant_noise_budget(dataE) << endl;
+
+    evaluator.square_inplace(dataE);
+    evaluator.relinearize_inplace(dataE, relin_keys);
+    cout << decryptor.invariant_noise_budget(dataE) << endl;
 }
 
 TEST_F(SealBfvCrtWrapper, SplitBigNumbers)
