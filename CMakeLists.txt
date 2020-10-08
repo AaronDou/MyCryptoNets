@@ -43,3 +43,10 @@ target_include_directories(nn_test
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include
 )
+
+add_executable(seal_benchmark test/SealBenchmark.cpp)
+target_link_libraries(seal_benchmark gtest_main core)
+target_include_directories(seal_benchmark
+    PUBLIC 
+        ${PROJECT_SOURCE_DIR}/include
+)

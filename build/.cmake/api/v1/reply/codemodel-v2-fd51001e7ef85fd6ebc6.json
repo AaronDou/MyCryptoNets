@@ -1,0 +1,104 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5.1"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "MyCryptoNets",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "core::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-core-Debug-f7e21be66662ddb200af.json",
+					"name" : "core",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "cryptonets::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cryptonets-Debug-b65efc76bec051aafb4e.json",
+					"name" : "cryptonets",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "nn_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-nn_test-Debug-8126c0b9b4710e149efc.json",
+					"name" : "nn_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "seal_benchmark::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-seal_benchmark-Debug-0faafdec7f3fe5f8be57.json",
+					"name" : "seal_benchmark",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "vector_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-vector_test-Debug-77328b09a0839bbc5b2e.json",
+					"name" : "vector_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "wrapper_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-wrapper_test-Debug-445f00b4b89ae2917882.json",
+					"name" : "wrapper_test",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+		"source" : "/home/aaron/Dropbox/Projects/MyCryptoNets"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 1
+	}
+}

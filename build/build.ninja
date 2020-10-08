@@ -46,6 +46,39 @@ build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
 build edit_cache: phony CMakeFiles/edit_cache.util
 
 # =============================================================================
+# Object build statements for EXECUTABLE target seal_benchmark
+
+
+#############################################
+# Order-only phony target for seal_benchmark
+
+build cmake_object_order_depends_target_seal_benchmark: phony || cmake_object_order_depends_target_core
+
+build CMakeFiles/seal_benchmark.dir/test/SealBenchmark.cpp.o: CXX_COMPILER__seal_benchmark_Debug ../test/SealBenchmark.cpp || cmake_object_order_depends_target_seal_benchmark
+  DEP_FILE = CMakeFiles/seal_benchmark.dir/test/SealBenchmark.cpp.o.d
+  FLAGS = -g -maes -pthread -fopenmp=libomp -std=gnu++17
+  INCLUDES = -I../include
+  OBJECT_DIR = CMakeFiles/seal_benchmark.dir
+  OBJECT_FILE_DIR = CMakeFiles/seal_benchmark.dir/test
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target seal_benchmark
+
+
+#############################################
+# Link the executable seal_benchmark
+
+build seal_benchmark: CXX_EXECUTABLE_LINKER__seal_benchmark_Debug CMakeFiles/seal_benchmark.dir/test/SealBenchmark.cpp.o | libcore.a /usr/local/lib/libseal.a /usr/lib/x86_64-linux-gnu/libomp.so /usr/lib/x86_64-linux-gnu/libpthread.so || libcore.a
+  FLAGS = -g
+  LINK_LIBRARIES = -lgtest_main  libcore.a  -lgtest  /usr/local/lib/libseal.a  -pthread  /usr/lib/x86_64-linux-gnu/libomp.so  -lpthread
+  OBJECT_DIR = CMakeFiles/seal_benchmark.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = seal_benchmark
+  TARGET_PDB = seal_benchmark.dbg
+
+# =============================================================================
 # Object build statements for EXECUTABLE target nn_test
 
 
@@ -227,7 +260,7 @@ build core: phony libcore.a
 #############################################
 # Folder: /home/aaron/Dropbox/Projects/MyCryptoNets/build
 
-build all: phony nn_test vector_test wrapper_test cryptonets libcore.a
+build all: phony seal_benchmark nn_test vector_test wrapper_test cryptonets libcore.a
 
 # =============================================================================
 # Built-in targets

@@ -1,6 +1,11 @@
 [
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
+  "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/seal_benchmark.dir/test/SealBenchmark.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBenchmark.cpp",
+  "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBenchmark.cpp"
+},
+{
+  "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
   "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp",
   "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp"
 },
