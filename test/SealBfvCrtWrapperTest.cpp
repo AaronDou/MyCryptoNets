@@ -21,6 +21,38 @@ protected:
     SealBfvEnvironment env;
 };
 
+TEST_F(SealBfvCrtWrapper, NoiseBudget)
+{
+    size_t poly_modulus_degree = 8192;
+    uint64_t plain_modulus = 549764251649;
+
+    EncryptionParameters parms(scheme_type::BFV);
+    parms.set_poly_modulus_degree(poly_modulus_degree);
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree)); 
+    
+    // parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 20)); // 146
+    parms.set_plain_modulus(plain_modulus); // 127
+
+    auto context = SEALContext::Create(parms);
+    KeyGenerator keygen(context);
+    auto public_key = keygen.public_key();
+    auto secret_key = keygen.secret_key();
+    auto relin_keys = keygen.relin_keys_local();
+
+    Encryptor encryptor(context, public_key);
+    Decryptor decryptor(context, secret_key);
+    BatchEncoder batchEncoder(context);
+    Evaluator evaluator(context);
+
+    vector<size_t> data {5, 3};
+    Plaintext temp;
+    batchEncoder.encode(data, temp);
+    Ciphertext dataE;
+    encryptor.encrypt(temp, dataE);
+
+    // evaluator.
+}
+
 TEST_F(SealBfvCrtWrapper, SplitBigNumbers)
 {
     EXPECT_EQ(splitBigNumbers(0.5, 100, env), (vector<uint64_t>{50, 50}));
@@ -37,14 +69,14 @@ TEST_F(SealBfvCrtWrapper, JoinSplitNumbers)
 
 TEST_F(SealBfvCrtWrapper, EncryptionRoundTrip)
 {
-    vector<double> vec {1.0, 2.1, -5.3, 0};
+    vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext bfvCiphertext(vec, env, 100);
     EXPECT_EQ(bfvCiphertext.decrypt(env), vec);
 }
 
 TEST_F(SealBfvCrtWrapper, SquareInplace)
 {
-    vector<double> vec {1.0, 2.1, -5.3, 0};
+    vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext bfvCiphertext(vec, env, 100);
     square_inplace(bfvCiphertext, env);
     EXPECT_EQ(bfvCiphertext.decrypt(env), (vector<double>{1.0, 4.41, 28.09, 0}));
@@ -52,7 +84,7 @@ TEST_F(SealBfvCrtWrapper, SquareInplace)
 
 TEST_F(SealBfvCrtWrapper, MultiplyPlain)
 {
-    vector<double> vec {1.0, 2.1, -5.3, 0};
+    vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext ciphertext(vec, env, 100);
 
     SealBfvPlaintext plaintext(1.5, env, 2);
@@ -63,9 +95,9 @@ TEST_F(SealBfvCrtWrapper, MultiplyPlain)
 
 TEST_F(SealBfvCrtWrapper, AddMany)
 {
-    vector<double> vec1 {1.0, 2.1, -5.3, 0};
+    vector<double> vec1{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext ciphertext1(vec1, env, 100);
-    vector<double> vec2 {-3, 2, 5, -4.2};
+    vector<double> vec2{-3, 2, 5, -4.2};
     SealBfvCiphertext ciphertext2(vec2, env, 100);
 
     SealBfvCiphertext res;
@@ -75,9 +107,9 @@ TEST_F(SealBfvCrtWrapper, AddMany)
 
 TEST_F(SealBfvCrtWrapper, AddPlainInplace)
 {
-    vector<double> vec {1.0, 2.1, -5.3, 0};
+    vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext bfvCiphertext(vec, env, 100);
-    
+
     SealBfvPlaintext plaintext(1.5, env, 100);
     add_plain_inplace(bfvCiphertext, plaintext, env);
     EXPECT_EQ(bfvCiphertext.decrypt(env), (vector<double>{2.5, 3.6, -3.8, 1.5}));
