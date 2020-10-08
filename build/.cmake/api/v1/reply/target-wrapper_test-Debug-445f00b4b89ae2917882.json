@@ -53,6 +53,10 @@
 				},
 				{
 					"backtrace" : 2,
+					"fragment" : "-maes"
+				},
+				{
+					"backtrace" : 2,
 					"fragment" : "-pthread"
 				},
 				{
@@ -68,11 +72,6 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/aaron/Dropbox/Projects/MyCryptoNets/include"
-				},
-				{
-					"backtrace" : 2,
-					"isSystem" : true,
-					"path" : "/usr/local/include/SEAL-3.5"
 				}
 			],
 			"language" : "CXX",
@@ -117,7 +116,7 @@
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "/usr/local/lib/libseal-3.5.a",
+				"fragment" : "/usr/local/lib/libseal.a",
 				"role" : "libraries"
 			},
 			{

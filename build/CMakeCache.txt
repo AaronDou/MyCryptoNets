@@ -314,7 +314,7 @@ OpenMP_pthread_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libpthread.so
 PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python
 
 //The directory containing a CMake configuration file for SEAL.
-SEAL_DIR:PATH=/usr/local/lib/cmake/SEAL-3.5
+SEAL_DIR:PATH=/usr/local/lib/cmake/SEAL
 
 //Dependencies for the target
 core_LIB_DEPENDS:STATIC=general;SEAL::seal;

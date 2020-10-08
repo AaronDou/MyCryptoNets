@@ -1803,7 +1803,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/usr/local/lib/cmake/SEAL-3.5"
+			"value" : "/usr/local/lib/cmake/SEAL"
 		},
 		{
 			"name" : "THREADS_HAVE_PTHREAD_ARG",

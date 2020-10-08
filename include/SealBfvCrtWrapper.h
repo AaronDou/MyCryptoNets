@@ -37,14 +37,20 @@ namespace mycryptonets
         {
             EncryptionParameters parms(scheme_type::BFV);
             parms.set_poly_modulus_degree(poly_modulus_degree);
-            parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+            // version 3.2.1
+            parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
+            // version 3.5+ 
+            // parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
             parms.set_plain_modulus(plain_modulus);
 
             context = SEALContext::Create(parms);
             KeyGenerator keygen(context);
             public_key = keygen.public_key();
             secret_key = keygen.secret_key();
-            relin_keys = keygen.relin_keys_local();
+            // version 3.2.1
+            relin_keys = keygen.relin_keys(10);
+            // version 3.5+
+            // relin_keys = keygen.relin_keys_local();
 
             encryptorPtr = make_shared<Encryptor>(context, public_key);
             decryptorPtr = make_shared<Decryptor>(context, secret_key);
@@ -138,6 +144,7 @@ namespace mycryptonets
                           double scale = 1.0) : batchSize(m.size()), scale(scale)
         {
             size_t envCount = env.environments.size();
+            assert (envCount > 0);
             vector<vector<uint64_t>> split(envCount, vector<uint64_t>(batchSize, 0));
             for (size_t i = 0; i < batchSize; i++)
             {
@@ -156,12 +163,6 @@ namespace mycryptonets
                 eVectors.emplace_back(move(temp_c));
             }
         }
-
-        SealBfvCiphertext(vector<Ciphertext> &eVectors,
-                          double scale,
-                          size_t batchSize) : eVectors(move(eVectors)),
-                                              scale(scale),
-                                              batchSize(batchSize) {}
 
         ~SealBfvCiphertext() {}
 

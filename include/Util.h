@@ -133,7 +133,7 @@ namespace mycryptonets
             f_(args...);
             end = std::chrono::steady_clock::now();
             elapsed_seconds = end - start;
-            std::cout << setw(20) << desc << " took ";
+            std::cout << desc << " took ";
             std::cout << elapsed_seconds.count() << " seconds" << std::endl;
         }
 

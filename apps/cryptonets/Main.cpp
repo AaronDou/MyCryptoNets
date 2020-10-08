@@ -13,7 +13,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         auto decor = make_decorator(encrypt_vec, "Encryption");
         decor(input, dataE, env, 16.0);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     // Conv Layer
@@ -39,7 +39,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         dataE.clear();
         dataE = move(resultE);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     // Square activation layer
@@ -48,7 +48,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
 
         decor(dataE, env);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     // FC1 Layer
@@ -72,7 +72,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         dataE.clear();
         dataE = move(resultE);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     // Debugging
@@ -86,7 +86,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
 
         decor(dataE, env);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     // FC2 Layer
@@ -110,7 +110,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<vector<doub
         dataE.clear();
         dataE = move(resultE);
 
-        cout << "Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
+        cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(dataE[0].eVectors[0]) << endl;
     }
 
     vector<vector<double>> res;

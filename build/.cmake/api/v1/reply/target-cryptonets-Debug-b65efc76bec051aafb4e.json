@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "nn_test"
+			"path" : "cryptonets"
 		}
 	],
 	"backtrace" : 1,
@@ -26,19 +26,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 40,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 41,
+				"line" : 19,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 42,
+				"line" : 20,
 				"parent" : 0
 			}
 		]
@@ -50,6 +50,10 @@
 			[
 				{
 					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 2,
+					"fragment" : "-maes"
 				},
 				{
 					"backtrace" : 2,
@@ -68,17 +72,12 @@
 				{
 					"backtrace" : 3,
 					"path" : "/home/aaron/Dropbox/Projects/MyCryptoNets/include"
-				},
-				{
-					"backtrace" : 2,
-					"isSystem" : true,
-					"path" : "/usr/local/include/SEAL-3.5"
 				}
 			],
 			"language" : "CXX",
 			"sourceIndexes" : 
 			[
-				0
+				1
 			]
 		}
 	],
@@ -89,7 +88,7 @@
 			"id" : "core::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "nn_test::@6890427a1f51a3e7e1df",
+	"id" : "cryptonets::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -104,20 +103,11 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-lgtest_main",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 2,
 				"fragment" : "libcore.a",
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "-lgtest",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "/usr/local/lib/libseal-3.5.a",
+				"fragment" : "/usr/local/lib/libseal.a",
 				"role" : "libraries"
 			},
 			{
@@ -135,8 +125,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "nn_test",
-	"nameOnDisk" : "nn_test",
+	"name" : "cryptonets",
+	"nameOnDisk" : "cryptonets",
 	"paths" : 
 	{
 		"build" : ".",
@@ -145,10 +135,17 @@
 	"sourceGroups" : 
 	[
 		{
-			"name" : "Source Files",
+			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
 				0
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1
 			]
 		}
 	],
@@ -156,9 +153,14 @@
 	[
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "test/NeuralNetworksTest.cpp",
+			"path" : "apps/cryptonets/DataPreprocess.h",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "apps/cryptonets/Main.cpp",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"

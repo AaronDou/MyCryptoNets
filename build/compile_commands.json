@@ -1,22 +1,22 @@
 [
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
-  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp",
+  "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/nn_test.dir/test/NeuralNetworksTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp",
   "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/NeuralNetworksTest.cpp"
 },
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
-  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/vector_test.dir/test/SealBfvVectorTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvVectorTest.cpp",
+  "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/vector_test.dir/test/SealBfvVectorTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvVectorTest.cpp",
   "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvVectorTest.cpp"
 },
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
-  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/wrapper_test.dir/test/SealBfvCrtWrapperTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvCrtWrapperTest.cpp",
+  "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/wrapper_test.dir/test/SealBfvCrtWrapperTest.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvCrtWrapperTest.cpp",
   "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/test/SealBfvCrtWrapperTest.cpp"
 },
 {
   "directory": "/home/aaron/Dropbox/Projects/MyCryptoNets/build",
-  "command": "/usr/local/bin/clang++ -I../include -isystem /usr/local/include/SEAL-3.5 -g -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/cryptonets.dir/apps/cryptonets/Main.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/apps/cryptonets/Main.cpp",
+  "command": "/usr/local/bin/clang++ -I../include -g -maes -pthread -fopenmp=libomp -std=gnu++17 -o CMakeFiles/cryptonets.dir/apps/cryptonets/Main.cpp.o -c /home/aaron/Dropbox/Projects/MyCryptoNets/apps/cryptonets/Main.cpp",
   "file": "/home/aaron/Dropbox/Projects/MyCryptoNets/apps/cryptonets/Main.cpp"
 }
 ]

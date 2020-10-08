@@ -28,7 +28,7 @@ TEST_F(SealBfvCrtWrapper, NoiseBudget)
 
     EncryptionParameters parms(scheme_type::BFV);
     parms.set_poly_modulus_degree(poly_modulus_degree);
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree)); 
+    parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree)); 
     
     // parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 20)); // 146
     parms.set_plain_modulus(plain_modulus); // 127
@@ -37,20 +37,24 @@ TEST_F(SealBfvCrtWrapper, NoiseBudget)
     KeyGenerator keygen(context);
     auto public_key = keygen.public_key();
     auto secret_key = keygen.secret_key();
-    auto relin_keys = keygen.relin_keys_local();
+    auto relin_keys = keygen.relin_keys(10);
 
     Encryptor encryptor(context, public_key);
     Decryptor decryptor(context, secret_key);
     BatchEncoder batchEncoder(context);
     Evaluator evaluator(context);
+    IntegerEncoder encoder(context);
 
-    vector<size_t> data {5, 3};
+    vector<size_t> data {5};
     Plaintext temp;
     batchEncoder.encode(data, temp);
     Ciphertext dataE;
     encryptor.encrypt(temp, dataE);
 
-    // evaluator.
+    // int value1 = 5;
+    // Plaintext plain1 = encoder.encode(value1);
+    // Ciphertext dataE;
+    // encryptor.encrypt(plain1, dataE);
 }
 
 TEST_F(SealBfvCrtWrapper, SplitBigNumbers)
