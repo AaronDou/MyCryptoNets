@@ -6,7 +6,7 @@
 
 namespace mycryptonets
 {
-    void fc(vector<SealBfvCiphertext *> inputPtr,
+    void fc(vector<SealBfvCiphertext const *> inputPtr,
             vector<SealBfvPlaintext> weights,
             vector<SealBfvPlaintext> biases,
             size_t dotLen,
@@ -18,8 +18,10 @@ namespace mycryptonets
             (inputPtr.size() * weights.size()) / (dotLen * dotLen),
             SealBfvCiphertext()};
 
+        #pragma omp parallel for
         for (size_t i = 0; i < weights.size(); i += dotLen)
         {
+            #pragma omp parallel for
             for (size_t j = 0; j < inputPtr.size(); j += dotLen)
             {
                 vector<SealBfvCiphertext> dots;
@@ -42,16 +44,16 @@ namespace mycryptonets
 
     template <typename T>
     void convolutionOrganizer(
-        vector<T> &data,
+        const vector<T> &data,
         size_t kernelDim,
         size_t stride,
         size_t padding, // to the right bottom direction
-        vector<T *> &dataPTr)
+        vector<T const *> &dataPTr)
     {
         size_t dim = (size_t)sqrt(data.size());
         size_t outputDim = (dim + padding - kernelDim) / stride + 1;
         size_t kernelSize = kernelDim * kernelDim;
-        dataPTr = vector<T *>(outputDim * outputDim * kernelSize, nullptr);
+        dataPTr = vector<T const *>(outputDim * outputDim * kernelSize, nullptr);
 
         for (size_t i = 0; i < outputDim; i++)
         {

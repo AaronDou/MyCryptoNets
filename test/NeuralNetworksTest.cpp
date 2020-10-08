@@ -66,10 +66,10 @@ TEST_F(NeuralNetworksTest, FC)
 TEST_F(NeuralNetworksTest, ConvolutionOrganizer)
 {
     vector<int> data = {6, 1, 3, 4, 1, /**/ 8, 0, 1, 3, 8, /**/ 9, 2, 4, 4, 2, /**/ 8, 4, 2, 2, 4, /**/ 7, 3, 1, 0, 0};
-    vector<int *> dataPtr;
+    vector<int const *> dataPtr;
     convolutionOrganizer(data, 3, 2, 2, dataPtr);
     vector<int> convData;
-    transform(dataPtr.begin(), dataPtr.end(), back_inserter(convData), [](int *c) { return c == nullptr ? -1 : *c; });
+    transform(dataPtr.begin(), dataPtr.end(), back_inserter(convData), [](int const *c) { return c == nullptr ? -1 : *c; });
     vector<int> expected{6, 1, 3, 8, 0, 1, 9, 2, 4, 3, 4, 1, 1, 3, 8, 4, 4, 2, 1, -1, -1, 8, -1, -1, 2, -1, -1, 9, 2, 4, 8, 4, 2, 7, 3, 1, 4, 4, 2, 2, 2, 4, 1, 0, 0, 2, -1, -1, 4, -1, -1, 0, -1, -1, 7, 3, 1, -1, -1, -1, -1, -1, -1, 1, 0, 0, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1};
     EXPECT_EQ(convData, expected);
 }
@@ -79,7 +79,7 @@ TEST_F(NeuralNetworksTest, Convolution)
     vector<vector<double>> data = {{6}, {1}, {3}, {4}, {1}, /**/ {8}, {0}, {1}, {3}, {8}, /**/ {9}, {2}, {4}, {4}, {2}, /**/ {8}, {4}, {2}, {2}, {4}, /**/ {7}, {3}, {1}, {0}, {0}};
     vector<SealBfvCiphertext> dataE;
     encrypt_vec(data, dataE, env, 10);
-    vector<SealBfvCiphertext *> dataEPtr;
+    vector<SealBfvCiphertext const *> dataEPtr;
     convolutionOrganizer(dataE, 3, 2, 2, dataEPtr);
 
     vector<double> weights{

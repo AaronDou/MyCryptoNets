@@ -107,10 +107,10 @@ namespace mycryptonets
     }
 
     template <typename T>
-    vector<T *> getPointers(vector<T> x)
+    vector<T const *> getPointers(const vector<T>& x)
     {
-        vector<T *> y;
-        transform(x.begin(), x.end(), back_inserter(y), [](T &c) { return &c; });
+        vector<T const *> y;
+        transform(x.begin(), x.end(), back_inserter(y), [](const T &c) { return &c; });
         return y;
     }
 

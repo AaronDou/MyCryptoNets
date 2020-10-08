@@ -7,6 +7,7 @@ namespace mycryptonets
     void square_inplace_vec(vector<SealBfvCiphertext> &ciphertexts,
                         const SealBfvEnvironment &env)
     {
+        #pragma omp parallel for
         for (size_t i = 0; i < ciphertexts.size(); i++)
         {
             square_inplace(ciphertexts[i], env);
