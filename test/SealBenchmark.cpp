@@ -12,13 +12,13 @@ class SealBenchmark : public ::testing::Test
 protected:
     SealBenchmark()
     {
-        poly_modulus_degree = 8192 * 2;
+        poly_modulus_degree = 8192;
 
         EncryptionParameters parms(scheme_type::BFV);
         parms.set_poly_modulus_degree(poly_modulus_degree);
         // parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
         parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-        parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 40));
+        parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 18));
 
         auto context = SEALContext::Create(parms);
         KeyGenerator keygen(context);
@@ -120,6 +120,26 @@ TEST_F(SealBenchmark, CiphertextAddNoiseBudget)
     evaluatorPtr->add_inplace(dataE, dataE1);
     cout << decryptorPtr->invariant_noise_budget(dataE) << endl;
 }
+
+TEST_F(SealBenchmark, ModulusSwitching)
+{
+    vector<uint64_t> data(poly_modulus_degree, 2);
+    Plaintext temp;
+    batchEncoderPtr->encode(data, temp);
+    Ciphertext dataE;
+    encryptorPtr->encrypt(temp, dataE);
+    cout << decryptorPtr->invariant_noise_budget(dataE) << endl;
+
+    evaluatorPtr->mod_switch_to_next_inplace(dataE);
+    cout << decryptorPtr->invariant_noise_budget(dataE) << endl;
+
+    evaluatorPtr->mod_switch_to_next_inplace(dataE);
+    cout << decryptorPtr->invariant_noise_budget(dataE) << endl;
+
+    evaluatorPtr->mod_switch_to_next_inplace(dataE);
+    cout << decryptorPtr->invariant_noise_budget(dataE) << endl;
+}
+
 
 int main(int argc, char **argv)
 {

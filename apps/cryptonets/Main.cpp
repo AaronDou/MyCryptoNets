@@ -8,14 +8,13 @@ using namespace mycryptonets;
 namespace {
     size_t POLY_MODULUS_DEGREE = 8192; 
     vector<Modulus> PLAINTEXT_MODULUS = PlainModulus::Batching(
-        POLY_MODULUS_DEGREE, {20, 20});
+        POLY_MODULUS_DEGREE, {18, 18});
     
-    double INPUT_SCALE = 4.0;
-    double CONV_SCALE = 4.0;
+    double INPUT_SCALE = 2.0;
+    double CONV_SCALE = 2.0;
     double FC1_SCALE = 32.0;
     double FC2_SCALE = 16.0;
 }
-
 
 
 vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiphertext> &inputE, const SealBfvEnvironment &env)
@@ -46,6 +45,14 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
         intermediateResultsE = move(resultE);
 
         cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(intermediateResultsE[0].eVectors[0]) << endl;
+    }
+
+    // Modulus switch
+    {
+        #pragma omp parallel for
+        for (size_t i = 0; i < intermediateResultsE.size(); i++) {
+            mod_switch_to_next_inplace(intermediateResultsE[i], env);
+        }
     }
 
     // Square activation layer

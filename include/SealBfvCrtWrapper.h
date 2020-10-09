@@ -256,6 +256,17 @@ namespace mycryptonets
         ciphertext.scale *= ciphertext.scale;
     }
 
+    void mod_switch_to_next_inplace(
+        SealBfvCiphertext &ciphertext,
+        const SealBfvEnvironment &env)
+    {
+        for (size_t i = 0; i < env.environments.size(); i++)
+        {
+            env.environments[i].evaluatorPtr->mod_switch_to_next_inplace(
+                ciphertext.eVectors[i]);
+        }
+    }
+
     void multiply_plain(
         const SealBfvCiphertext &ciphertext,
         const SealBfvPlaintext &plaintext,

@@ -13,7 +13,7 @@ class NeuralNetworksTest : public ::testing::Test
 protected:
     NeuralNetworksTest()
     {
-        env = SealBfvEnvironment(8192, {549764251649, 549764284417});
+        env = SealBfvEnvironment(8192, vector<uint64_t>{549764251649, 549764284417});
     }
 
     virtual ~NeuralNetworksTest() {}

@@ -13,7 +13,7 @@ class SealBfvVectorTest : public ::testing::Test
 protected:
     SealBfvVectorTest()
     {
-        env = SealBfvEnvironment(8192, {549764251649, 549764284417});
+        env = SealBfvEnvironment(8192, vector<uint64_t>{549764251649, 549764284417});
     }
 
     virtual ~SealBfvVectorTest() {}

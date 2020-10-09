@@ -25,6 +25,7 @@ namespace mycryptonets
             for (size_t j = 0; j < inputPtr.size(); j += dotLen)
             {
                 vector<SealBfvCiphertext> dots;
+#pragma omp parallel for                
                 for (size_t x = 0; x < dotLen; x++)
                 {
                     SealBfvCiphertext temp;
@@ -65,6 +66,7 @@ namespace mycryptonets
         size_t kernelSize = kernelDim * kernelDim;
         dataPTr = vector<T const *>(outputDim * outputDim * kernelSize, nullptr);
 
+        #pragma omp parallel for
         for (size_t i = 0; i < outputDim; i++)
         {
             for (size_t j = 0; j < outputDim; j++)
