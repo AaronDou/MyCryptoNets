@@ -18,10 +18,10 @@ namespace mycryptonets
             (inputPtr.size() * weights.size()) / (dotLen * dotLen),
             SealBfvCiphertext()};
 
-        #pragma omp parallel for
+#pragma omp parallel for
         for (size_t i = 0; i < weights.size(); i += dotLen)
         {
-            #pragma omp parallel for
+#pragma omp parallel for
             for (size_t j = 0; j < inputPtr.size(); j += dotLen)
             {
                 vector<SealBfvCiphertext> dots;
@@ -36,7 +36,17 @@ namespace mycryptonets
                     dots.emplace_back(move(temp));
                 }
                 size_t idx = (i / dotLen) * inputPtr.size() / dotLen + (j / dotLen);
-                add_many(dots, destination[idx], env);
+                if (dots.size() > 0)
+                {
+                    add_many(dots, destination[idx], env);
+                }
+                else
+                {
+                    // Put an encrypted 0
+                    destination[idx] = SealBfvCiphertext(vector<double>(env.poly_modulus_degree, 0),
+                                                         env,
+                                                         inputPtr[0]->scale * weights[0].scale);
+                }
                 add_plain_inplace(destination[idx], biases[i / dotLen], env);
             }
         }
@@ -78,18 +88,18 @@ namespace mycryptonets
     vector<size_t> hardmax(vector<vector<T>> input)
     {
         assert(input.size() > 0);
-        vector<size_t> res (input[0].size(), 0);
+        vector<size_t> res(input[0].size(), 0);
 
         for (size_t i = 0; i < input[0].size(); i++)
         {
             T max = input[0][i];
             for (size_t j = 1; j < input.size(); j++)
             {
-                if (input[j][i] > max) {
+                if (input[j][i] > max)
+                {
                     max = input[j][i];
                     res[i] = j;
                 }
-                
             }
         }
         return res;

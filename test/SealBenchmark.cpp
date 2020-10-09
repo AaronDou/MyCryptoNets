@@ -12,21 +12,20 @@ class SealBenchmark : public ::testing::Test
 protected:
     SealBenchmark()
     {
-        size_t poly_modulus_degree = 8192;
-        uint64_t plain_modulus = 549764251649;
+        poly_modulus_degree = 8192 * 2;
 
         EncryptionParameters parms(scheme_type::BFV);
         parms.set_poly_modulus_degree(poly_modulus_degree);
-        parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
-        // parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-        parms.set_plain_modulus(plain_modulus);
+        // parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
+        parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+        parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 40));
 
         auto context = SEALContext::Create(parms);
         KeyGenerator keygen(context);
         auto public_key = keygen.public_key();
         auto secret_key = keygen.secret_key();
-        relin_keys = keygen.relin_keys(60);
-        // relin_keys = keygen.relin_keys_local();
+        // relin_keys = keygen.relin_keys(60);
+        relin_keys = keygen.relin_keys_local();
 
         encryptorPtr = make_shared<Encryptor>(context, public_key);
         decryptorPtr = make_shared<Decryptor>(context, secret_key);
@@ -42,11 +41,12 @@ protected:
     shared_ptr<Decryptor> decryptorPtr;
     shared_ptr<Evaluator> evaluatorPtr;
     shared_ptr<BatchEncoder> batchEncoderPtr;
+    size_t poly_modulus_degree;
 };
 
 TEST_F(SealBenchmark, CiphetextMultNoiseBudget)
 {
-    vector<uint64_t> data(8192, 2);
+    vector<uint64_t> data(poly_modulus_degree, 2);
     Plaintext temp;
     batchEncoderPtr->encode(data, temp);
     Ciphertext dataE;
@@ -72,7 +72,7 @@ TEST_F(SealBenchmark, CiphetextMultNoiseBudget)
 
 TEST_F(SealBenchmark, PlaintextMultNoiseBudget)
 {
-    vector<uint64_t> data(8192, 2);
+    vector<uint64_t> data(poly_modulus_degree, 2);
     Plaintext temp;
     batchEncoderPtr->encode(data, temp);
     Ciphertext dataE;
@@ -94,13 +94,13 @@ TEST_F(SealBenchmark, PlaintextMultNoiseBudget)
 
 TEST_F(SealBenchmark, CiphertextAddNoiseBudget)
 {
-    vector<uint64_t> data(8192, 2);
+    vector<uint64_t> data(poly_modulus_degree, 2);
     Plaintext temp;
     batchEncoderPtr->encode(data, temp);
     Ciphertext dataE;
     encryptorPtr->encrypt(temp, dataE);
 
-    vector<uint64_t> data1(8192, 3);
+    vector<uint64_t> data1(poly_modulus_degree, 3);
     Plaintext temp1;
     batchEncoderPtr->encode(data1, temp1);
     Ciphertext dataE1;

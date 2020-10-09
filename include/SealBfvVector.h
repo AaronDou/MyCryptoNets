@@ -22,6 +22,7 @@ namespace mycryptonets
         size_t size = data.size();
         ciphertexts = vector<SealBfvCiphertext>(size, SealBfvCiphertext());
 
+        #pragma omp parallel for
         for (size_t i = 0; i < size; i++)
         {
             ciphertexts[i] = SealBfvCiphertext(data[i], env, scale);
@@ -36,6 +37,7 @@ namespace mycryptonets
         assert(size > 0);
         data = vector<vector<double>>(size, {0});
 
+        #pragma omp parallel for
         for (size_t i = 0; i < size; i++)
         {
             data[i] = ciphertexts[i].decrypt(env);
@@ -52,6 +54,7 @@ namespace mycryptonets
         size_t size = data.size();
         plaintexts = vector<SealBfvPlaintext>(size, SealBfvPlaintext());
 
+        #pragma omp parallel for
         for (size_t i = 0; i < size; i++)
         {
             plaintexts[i] = SealBfvPlaintext(data[i], env, scale);

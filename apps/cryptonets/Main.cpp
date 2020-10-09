@@ -5,6 +5,19 @@ using namespace std;
 using namespace seal;
 using namespace mycryptonets;
 
+namespace {
+    size_t POLY_MODULUS_DEGREE = 8192; 
+    vector<Modulus> PLAINTEXT_MODULUS = PlainModulus::Batching(
+        POLY_MODULUS_DEGREE, {20, 20});
+    
+    double INPUT_SCALE = 4.0;
+    double CONV_SCALE = 4.0;
+    double FC1_SCALE = 32.0;
+    double FC2_SCALE = 16.0;
+}
+
+
+
 vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiphertext> &inputE, const SealBfvEnvironment &env)
 {
     vector<SealBfvCiphertext> intermediateResultsE;
@@ -14,7 +27,6 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
     // Conv Layer
     {
         vector<SealBfvCiphertext> resultE;
-        double scale = 32.0;
         auto decor = make_decorator(fc, "Conv");
 
         vector<SealBfvCiphertext const *> inputEPtr;
@@ -22,8 +34,8 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
         vector<SealBfvPlaintext> BiasesP;
 
         convolutionOrganizer(inputE, 5, 2, 1, inputEPtr);
-        singleCoefficientEncode_vec(params.convWeights, WeightsP, env, scale);
-        singleCoefficientEncode_vec(params.convBiases, BiasesP, env, inputE[0].scale * scale);
+        singleCoefficientEncode_vec(params.convWeights, WeightsP, env, CONV_SCALE);
+        singleCoefficientEncode_vec(params.convBiases, BiasesP, env, inputE[0].scale * CONV_SCALE);
         decor(inputEPtr,
               WeightsP,
               BiasesP,
@@ -48,14 +60,13 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
     // FC1 Layer
     {
         vector<SealBfvCiphertext> resultE;
-        double scale = 32.0 * 32.0;
         auto decor = make_decorator(fc, "FC1");
 
         vector<SealBfvPlaintext> WeightsP;
         vector<SealBfvPlaintext> BiasesP;
 
-        singleCoefficientEncode_vec(params.FC1Weights, WeightsP, env, scale);
-        singleCoefficientEncode_vec(params.FC1Biases, BiasesP, env, intermediateResultsE[0].scale * scale);
+        singleCoefficientEncode_vec(params.FC1Weights, WeightsP, env, FC1_SCALE);
+        singleCoefficientEncode_vec(params.FC1Biases, BiasesP, env, intermediateResultsE[0].scale * FC1_SCALE);
         decor(getPointers(intermediateResultsE),
               WeightsP,
               BiasesP,
@@ -73,7 +84,6 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
     vector<vector<double>> temp;
     decrypt_vec(intermediateResultsE, temp, env);
 
-
     // Square activation layer
     {
         auto decor = make_decorator(square_inplace_vec, "Square");
@@ -86,14 +96,13 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
     // FC2 Layer
     {
         vector<SealBfvCiphertext> resultE;
-        double scale = 32.0;
         auto decor = make_decorator(fc, "FC2");
 
         vector<SealBfvPlaintext> WeightsP;
         vector<SealBfvPlaintext> BiasesP;
 
-        singleCoefficientEncode_vec(params.FC2Weights, WeightsP, env, scale);
-        singleCoefficientEncode_vec(params.FC2Biases, BiasesP, env, intermediateResultsE[0].scale * scale);
+        singleCoefficientEncode_vec(params.FC2Weights, WeightsP, env, FC2_SCALE);
+        singleCoefficientEncode_vec(params.FC2Biases, BiasesP, env, intermediateResultsE[0].scale * FC2_SCALE);
         decor(getPointers(intermediateResultsE),
               WeightsP,
               BiasesP,
@@ -115,16 +124,15 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
 
 int main()
 {
-    size_t poly_modulus_degree = 8192;
-    vector<uint64_t> plain_modulus{549764251649, 549764284417};
-
-    SealBfvEnvironment env = SealBfvEnvironment(poly_modulus_degree, plain_modulus);
+    SealBfvEnvironment env = SealBfvEnvironment(
+        POLY_MODULUS_DEGREE,
+        PLAINTEXT_MODULUS);
 
     auto params = readParams();
 
     vector<vector<vector<double>>> data;
     vector<vector<size_t>> labels;
-    readInput(poly_modulus_degree, 1.0 / 256.0, data, labels);
+    readInput(POLY_MODULUS_DEGREE, 1.0 / 256.0, data, labels);
 
     // Batch processing
 
@@ -134,7 +142,7 @@ int main()
         // Encrypt
         vector<SealBfvCiphertext> inputE;
         auto decor = make_decorator(encrypt_vec, "Encryption");
-        decor(data[batchIndex], inputE, env, 16.0);
+        decor(data[batchIndex], inputE, env, INPUT_SCALE);
         cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(inputE[0].eVectors[0]) << endl;
 
         // Forward pass on the cloud
@@ -143,7 +151,7 @@ int main()
         std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::steady_clock::now();
         std::chrono::duration<double> elapsed_seconds = end - start;
         cout << setw(20) << "Total time: ";
-        cout<< elapsed_seconds.count() << " seconds" << std::endl;
+        cout << elapsed_seconds.count() << " seconds" << std::endl;
 
         auto predictions = hardmax(res);
 
@@ -155,7 +163,8 @@ int main()
             }
         }
 
-        cout << "Accuracy is " << correct << "/" << poly_modulus_degree << endl;
+        cout << "Accuracy is " << correct << "/" << POLY_MODULUS_DEGREE;
+        cout << "=" << (1.0 * correct)/POLY_MODULUS_DEGREE << endl;
 
         break;
     }

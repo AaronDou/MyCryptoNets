@@ -21,7 +21,7 @@ namespace mycryptonets
                    vector<vector<size_t>> &labels)
     {
         size_t numRows = 28 * 28;
-        size_t batch = 2;
+        size_t batch = (size_t)ceil(10000.0 / batchSize);
 
         vector<double> pixelBatch(batchSize, 0.0);
         vector<vector<double>> imageBatch(numRows, pixelBatch);

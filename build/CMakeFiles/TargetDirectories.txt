@@ -1,8 +1,0 @@
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/edit_cache.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/seal_benchmark.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/nn_test.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/rebuild_cache.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/vector_test.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/wrapper_test.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/cryptonets.dir
-/home/aaron/Dropbox/Projects/MyCryptoNets/build/CMakeFiles/core.dir
