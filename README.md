@@ -16,3 +16,8 @@ FC2 took 0.406356 seconds
         Total time: 46.0073 seconds
 Accuracy is 7983/8192=0.974487
 ```
+
+deps:
+- openmp
+- microsoft seal 3.5.6
+- googletest
