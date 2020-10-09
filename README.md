@@ -1,5 +1,6 @@
 # A C++ implementation of CryptoNets
 
+```
 Encryption took 9.15112 seconds
 - Noise budget: 150
 Conv took 12.8924 seconds
@@ -14,3 +15,4 @@ FC2 took 0.406356 seconds
 - Noise budget: 11
         Total time: 46.0073 seconds
 Accuracy is 7983/8192=0.974487
+```
