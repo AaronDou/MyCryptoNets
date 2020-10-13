@@ -28,7 +28,7 @@ TEST_F(NeuralNetworksTest, FC)
         {700, -0.05, 5.888},
         {41, -0.0001, 55558}};
     vector<SealBfvCiphertext> ciphertexts;
-    encrypt_vec(data, ciphertexts, env, 10000);
+    encrypt(data, ciphertexts, env, 10000);
 
     vector<double> weights{-6, 0, 10.54, 8.4, -99.99, 1001};
     vector<SealBfvPlaintext> weightsP;
@@ -78,30 +78,46 @@ TEST_F(NeuralNetworksTest, Convolution)
 {
     vector<vector<double>> data = {{6}, {1}, {3}, {4}, {1}, /**/ {8}, {0}, {1}, {3}, {8}, /**/ {9}, {2}, {4}, {4}, {2}, /**/ {8}, {4}, {2}, {2}, {4}, /**/ {7}, {3}, {1}, {0}, {0}};
     vector<SealBfvCiphertext> dataE;
-    encrypt_vec(data, dataE, env, 10);
+    encrypt(data, dataE, env, 10);
     vector<SealBfvCiphertext const *> dataEPtr;
     convolutionOrganizer(dataE, 3, 2, 2, dataEPtr);
 
-    vector<double> weights{
-        -6, 0, 1,
-        5, -7, 6,
-        -7, 10, 8,
+    vector<vector<double>> weights{
+        {-6},
+        {0},
+        {1},
+        {5},
+        {-7},
+        {6},
+        {-7},
+        {10},
+        {8},
         /* kernel separator*/
-        5, 0, 1,
-        5, -7, 6,
-        -7, 10, 8};
+        {5},
+        {0},
+        {1},
+        {5},
+        {-7},
+        {6},
+        {-7},
+        {10},
+        {8},
+    };
     vector<SealBfvPlaintext> weightsP;
-    encode(weights, weightsP, env, 100);
+    batch_encode(weights, weightsP, env, 100);
 
-    SealBfvPlaintext bias0{5, env, 1000};
-    SealBfvPlaintext bias1{-3, env, 1000};
-    vector<SealBfvPlaintext> biases{bias0, bias1};
+    vector<vector<double>> biases{
+        {5},
+        {-3},
+    };
+    vector<SealBfvPlaintext> biasesP;
+    batch_encode(biases, biasesP, env, 1000);
 
     vector<SealBfvCiphertext> destination;
 
     fc(dataEPtr,
        weightsP,
-       biases,
+       biasesP,
        9,
        destination,
        env);
@@ -121,9 +137,8 @@ TEST_F(NeuralNetworksTest, HardMax)
         {9, -1, -5, 6, 5},
         {-1, -4, -9, 1, 9},
         {-6, -8, 0, 3, -7},
-        {7, -8, 3, -2, 2}
-    };
-    vector<size_t> expected {1, 0, 4, 1, 2};
+        {7, -8, 3, -2, 2}};
+    vector<size_t> expected{1, 0, 4, 1, 2};
     EXPECT_EQ(hardmax(data), expected);
 }
 

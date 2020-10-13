@@ -90,22 +90,24 @@ TEST_F(NeuralNetworksTest, Convolution)
     vector<SealBfvCiphertext> dataE;
     encrypt(patches, dataE, env);
 
-    vector<double> kernel1{
-        -6, 0, 1,
-        5, -7, 6,
-        -7, 10, 8};
-    vector<double> kernel2{
-        5, 0, 1,
-        5, -7, 6,
-        -7, 10, 8};
+    size_t batchSize = dataE[0].batchSize;
+    vector<vector<double>> kernel1{
+        vector<double>(batchSize, -6), vector<double>(batchSize, 0), vector<double>(batchSize, 1),
+        vector<double>(batchSize, 5), vector<double>(batchSize, -7), vector<double>(batchSize, 6),
+        vector<double>(batchSize, -7), vector<double>(batchSize, 10), vector<double>(batchSize, 8)};
+    vector<vector<double>> kernel2{
+        vector<double>(batchSize, 5), vector<double>(batchSize, 0), vector<double>(batchSize, 1),
+        vector<double>(batchSize, 5), vector<double>(batchSize, -7), vector<double>(batchSize, 6),
+        vector<double>(batchSize, -7), vector<double>(batchSize, 10), vector<double>(batchSize, 8)};
+
     vector<SealBfvPlaintext> kernel1P;
-    encode(kernel1, kernel1P, env);
+    batch_encode(kernel1, kernel1P, env);
     vector<SealBfvPlaintext> kernel2P;
-    encode(kernel2, kernel2P, env);
+    batch_encode(kernel2, kernel2P, env);
     vector<vector<SealBfvPlaintext>> weightsP{kernel1P, kernel2P};
 
-    SealBfvPlaintext bias0{vector<double>(dataE[0].batchSize, 5), env};
-    SealBfvPlaintext bias1{vector<double>(dataE[0].batchSize, -3), env};
+    SealBfvPlaintext bias0{vector<double>(batchSize, 5), env};
+    SealBfvPlaintext bias1{vector<double>(batchSize, -3), env};
     vector<SealBfvPlaintext> biases{bias0, bias1};
 
     vector<SealBfvCiphertext> destination;

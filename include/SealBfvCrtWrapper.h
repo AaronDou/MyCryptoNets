@@ -45,6 +45,7 @@ namespace mycryptonets
             public_key = keygen.public_key();
             secret_key = keygen.secret_key();
             relin_keys = keygen.relin_keys_local();
+            gal_keys = keygen.galois_keys_local();
 
             encryptorPtr = make_shared<Encryptor>(context, public_key);
             decryptorPtr = make_shared<Decryptor>(context, secret_key);
@@ -57,6 +58,7 @@ namespace mycryptonets
         PublicKey public_key;
         SecretKey secret_key;
         RelinKeys relin_keys;
+        GaloisKeys gal_keys;
 
         shared_ptr<Encryptor> encryptorPtr;
         shared_ptr<Decryptor> decryptorPtr;
@@ -175,6 +177,20 @@ namespace mycryptonets
             }
         }
 
+        SealBfvCiphertext(const SealBfvCiphertext &ciphertext) : batchSize(ciphertext.batchSize),
+                                                                 scale(ciphertext.scale),
+                                                                 eVectors(ciphertext.eVectors)
+        {
+        }
+
+        SealBfvCiphertext &operator=(const SealBfvCiphertext &ciphertext)
+        {
+            batchSize = ciphertext.batchSize;
+            scale = ciphertext.scale;
+            eVectors = ciphertext.eVectors;
+            return *this;
+        }
+
         ~SealBfvCiphertext() {}
 
         vector<double> decrypt(const SealBfvEnvironment &env) const
@@ -205,6 +221,7 @@ namespace mycryptonets
 
         vector<Ciphertext> eVectors;
         double scale;
+        // Set bits from left to right
         size_t batchSize;
     };
 
@@ -225,8 +242,8 @@ namespace mycryptonets
         }
 
         SealBfvPlaintext(const vector<double> &m,
-                          const SealBfvEnvironment &env,
-                          double scale = 1.0) : batchSize(m.size()), scale(scale)
+                         const SealBfvEnvironment &env,
+                         double scale = 1.0) : batchSize(m.size()), scale(scale)
         {
             size_t envCount = env.environments.size();
             assert(envCount > 0);
@@ -302,7 +319,7 @@ namespace mycryptonets
         }
         destination.eVectors = move(eVectors);
         destination.scale = ciphertext.scale * plaintext.scale;
-        destination.batchSize = ciphertext.batchSize;
+        destination.batchSize = max(ciphertext.batchSize, plaintext.batchSize);
     }
 
     void add_many(
@@ -326,7 +343,13 @@ namespace mycryptonets
         }
         destination.eVectors = move(eVectors);
         destination.scale = ciphertexts[0].scale;
-        destination.batchSize = ciphertexts[0].batchSize;
+
+        // batch size should be the largest
+        vector<size_t> batchSizes;
+        for_each(ciphertexts.begin(),
+                 ciphertexts.end(),
+                 [&batchSizes](const SealBfvCiphertext &ciphertext) { batchSizes.emplace_back(ciphertext.batchSize); });
+        destination.batchSize = *max_element(batchSizes.begin(), batchSizes.end());
     }
 
     void add_plain_inplace(
@@ -335,12 +358,39 @@ namespace mycryptonets
         const SealBfvEnvironment &env)
     {
         assert(ciphertext.scale == plaintext.scale);
-        assert(ciphertext.batchSize == plaintext.batchSize);
 
         for (size_t i = 0; i < env.environments.size(); i++)
         {
             env.environments[i].evaluatorPtr->add_plain_inplace(ciphertext.eVectors[i], plaintext.pVectors[i]);
         }
+        ciphertext.batchSize = max(ciphertext.batchSize, plaintext.batchSize);
+    }
+
+    void rotate_inplace(SealBfvCiphertext &ciphertext,
+                        int steps,
+                        const SealBfvEnvironment &env)
+    {
+        for (size_t i = 0; i < env.environments.size(); i++)
+        {
+            env.environments[i].evaluatorPtr->rotate_rows_inplace(
+                ciphertext.eVectors[i],
+                steps,
+                env.environments[i].gal_keys);
+        }
+        ciphertext.batchSize -= steps;
+        if (ciphertext.batchSize < 0 || ciphertext.batchSize > env.poly_modulus_degree)
+        {
+            ciphertext.batchSize = env.poly_modulus_degree;
+        }
+    }
+
+    void rotate(const SealBfvCiphertext &ciphertext,
+                int steps,
+                SealBfvCiphertext &destination,
+                const SealBfvEnvironment &env)
+    {
+        destination = ciphertext;
+        rotate_inplace(destination, steps, env);
     }
 
 } // namespace mycryptonets

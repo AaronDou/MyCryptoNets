@@ -55,22 +55,22 @@ TEST_F(SealBfvCrtWrapper, MultiplyPlain)
     vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext ciphertext(vec, env, 100);
 
-    SealBfvPlaintext plaintext(1.5, env, 2);
+    SealBfvPlaintext plaintext(vector<double>(5, 1.5), env, 2);
     SealBfvCiphertext res;
     multiply_plain(ciphertext, plaintext, res, env);
-    EXPECT_EQ(res.decrypt(env), (vector<double>{1.5, 3.15, -7.95, 0}));
+    EXPECT_EQ(res.decrypt(env), (vector<double>{1.5, 3.15, -7.95, 0, 0}));
 }
 
 TEST_F(SealBfvCrtWrapper, AddMany)
 {
     vector<double> vec1{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext ciphertext1(vec1, env, 100);
-    vector<double> vec2{-3, 2, 5, -4.2};
+    vector<double> vec2{-3, 2, 5, -4.2, 6, 8.7};
     SealBfvCiphertext ciphertext2(vec2, env, 100);
 
     SealBfvCiphertext res;
     add_many({ciphertext1, ciphertext2, ciphertext2}, res, env);
-    EXPECT_EQ(res.decrypt(env), (vector<double>{-5, 6.1, 4.7, -8.4}));
+    EXPECT_EQ(res.decrypt(env), (vector<double>{-5, 6.1, 4.7, -8.4, 12, 17.4}));
 }
 
 TEST_F(SealBfvCrtWrapper, AddPlainInplace)
@@ -78,9 +78,9 @@ TEST_F(SealBfvCrtWrapper, AddPlainInplace)
     vector<double> vec{1.0, 2.1, -5.3, 0};
     SealBfvCiphertext bfvCiphertext(vec, env, 100);
 
-    SealBfvPlaintext plaintext(1.5, env, 100);
+    SealBfvPlaintext plaintext(vector<double>(5, 1.5), env, 100);
     add_plain_inplace(bfvCiphertext, plaintext, env);
-    EXPECT_EQ(bfvCiphertext.decrypt(env), (vector<double>{2.5, 3.6, -3.8, 1.5}));
+    EXPECT_EQ(bfvCiphertext.decrypt(env), (vector<double>{2.5, 3.6, -3.8, 1.5, 1.5}));
 }
 
 TEST_F(SealBfvCrtWrapper, IsZero)
@@ -90,6 +90,15 @@ TEST_F(SealBfvCrtWrapper, IsZero)
 
     SealBfvPlaintext plaintext2(0.0, env, 2);
     EXPECT_EQ(plaintext2.is_zero(), true);
+}
+
+TEST_F(SealBfvCrtWrapper, Rotate)
+{
+    vector<double> vec1{1.0, 2.1, -5.3, 0};
+    SealBfvCiphertext ciphertext1(vec1, env, 100);
+    rotate_inplace(ciphertext1, -5, env);
+    vector<double> expected {0, 0, 0, 0, 0, 1.0, 2.1, -5.3, 0};
+    EXPECT_EQ(ciphertext1.decrypt(env), expected);
 }
 
 int main(int argc, char **argv)

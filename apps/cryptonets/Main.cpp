@@ -57,7 +57,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
 
     // Square activation layer
     {
-        auto decor = make_decorator(square_inplace, "Square");
+        auto decor = make_decorator(square_inplace_vec, "Square");
 
         decor(intermediateResultsE, env);
 
@@ -93,7 +93,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
 
     // Square activation layer
     {
-        auto decor = make_decorator(square_inplace, "Square");
+        auto decor = make_decorator(square_inplace_vec, "Square");
 
         decor(intermediateResultsE, env);
 
@@ -148,7 +148,7 @@ int main()
     {
         // Encrypt
         vector<SealBfvCiphertext> inputE;
-        auto decor = make_decorator(encrypt_vec, "Encryption");
+        auto decor = make_decorator(encrypt, "Encryption");
         decor(data[batchIndex], inputE, env, INPUT_SCALE);
         cout << "- Noise budget: " << env.environments[0].decryptorPtr->invariant_noise_budget(inputE[0].eVectors[0]) << endl;
 

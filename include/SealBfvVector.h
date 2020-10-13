@@ -4,7 +4,7 @@
 
 namespace mycryptonets
 {
-    void square_inplace(vector<SealBfvCiphertext> &ciphertexts,
+    void square_inplace_vec(vector<SealBfvCiphertext> &ciphertexts,
                         const SealBfvEnvironment &env)
     {
 #pragma omp parallel for
@@ -106,7 +106,9 @@ namespace mycryptonets
         }
     }
 
-    // Stack multiple ciphertexts of the same batchSize into one new ciphertext by rotation.
+    // Stack multiple ciphertexts into one new ciphertext by rotation.
+    // The ciphertexts being stacked must have the same batchSize and
+    // scale.
     void stack(const vector<SealBfvCiphertext> &ciphertexts,
                SealBfvCiphertext &destination,
                const SealBfvEnvironment &env)
@@ -115,7 +117,13 @@ namespace mycryptonets
         size_t stackedBatchSize = ciphertexts[0].batchSize * ciphertexts.size();
         assert (stackedBatchSize < env.poly_modulus_degree);
 
-        
+        //TODO Use masks to do some cleaning before stacking
+
+        for (size_t i = 0; i < ciphertexts.size(); i++) {
+
+        }
+
+        destination.batchSize = stackedBatchSize;
     }
 
     // Replicate

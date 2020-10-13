@@ -42,7 +42,7 @@ TEST_F(SealBfvVectorTest, SquareInplace)
     };
     vector<SealBfvCiphertext> ciphertexts;
     encrypt(data, ciphertexts, env, 10000);
-    square_inplace(ciphertexts, env);
+    square_inplace_vec(ciphertexts, env);
     vector<vector<double>> decrypted;
     decrypt(ciphertexts, decrypted, env);
 
