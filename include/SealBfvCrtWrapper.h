@@ -221,7 +221,7 @@ namespace mycryptonets
 
         SealBfvPlaintext(double m,
                          const SealBfvEnvironment &env,
-                         double scale = 1.0) : scale(scale)
+                         double scale = 1.0) : batchSize(env.poly_modulus_degree), scale(scale)
         {
             vector<uint64_t> split = splitBigNumbers(m, scale, env);
             for (auto num : split)
@@ -230,17 +230,41 @@ namespace mycryptonets
             }
         }
 
+        SealBfvPlaintext(const vector<double> &m,
+                          const SealBfvEnvironment &env,
+                          double scale = 1.0) : batchSize(m.size()), scale(scale)
+        {
+            size_t envCount = env.environments.size();
+            assert(envCount > 0);
+            vector<vector<uint64_t>> split(envCount, vector<uint64_t>(batchSize, 0));
+            for (size_t i = 0; i < batchSize; i++)
+            {
+                auto temp = splitBigNumbers(m[i], scale, env);
+                for (size_t j = 0; j < envCount; j++)
+                {
+                    split[j][i] = temp[j];
+                }
+            }
+            for (size_t j = 0; j < envCount; j++)
+            {
+                Plaintext temp_p;
+                env.environments[j].batchEncoderPtr->encode(split[j], temp_p);
+                pVectors.emplace_back(move(temp_p));
+            }
+        }
+
         ~SealBfvPlaintext() {}
 
-        bool is_zero()
+        bool is_zero() const
         {
             return all_of(pVectors.begin(),
                           pVectors.end(),
-                          [](Plaintext &p) { return p.is_zero(); });
+                          [](const Plaintext &p) { return p.is_zero(); });
         }
 
         vector<Plaintext> pVectors;
         double scale;
+        size_t batchSize;
     };
 
     void square_inplace(
@@ -317,6 +341,7 @@ namespace mycryptonets
         const SealBfvEnvironment &env)
     {
         assert(ciphertext.scale == plaintext.scale);
+        assert(ciphertext.batchSize == plaintext.batchSize);
 
         for (size_t i = 0; i < env.environments.size(); i++)
         {

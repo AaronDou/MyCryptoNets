@@ -85,25 +85,4 @@ namespace mycryptonets
             }
         }
     }
-
-    template <typename T>
-    vector<size_t> hardmax(vector<vector<T>> input)
-    {
-        assert(input.size() > 0);
-        vector<size_t> res(input[0].size(), 0);
-
-        for (size_t i = 0; i < input[0].size(); i++)
-        {
-            T max = input[0][i];
-            for (size_t j = 1; j < input.size(); j++)
-            {
-                if (input[j][i] > max)
-                {
-                    max = input[j][i];
-                    res[i] = j;
-                }
-            }
-        }
-        return res;
-    }
 } // namespace mycryptonets

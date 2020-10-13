@@ -32,7 +32,7 @@ TEST_F(NeuralNetworksTest, FC)
 
     vector<double> weights{-6, 0, 10.54, 8.4, -99.99, 1001};
     vector<SealBfvPlaintext> weightsP;
-    singleCoefficientEncode_vec(weights, weightsP, env, 100);
+    encode(weights, weightsP, env, 100);
 
     SealBfvPlaintext bias0{-6.66666, env, 1000000};
     SealBfvPlaintext bias1{18888, env, 1000000};
@@ -48,7 +48,7 @@ TEST_F(NeuralNetworksTest, FC)
        env);
 
     vector<vector<double>> res;
-    decrypt_vec(destination, res, env);
+    decrypt(destination, res, env);
 
     vector<vector<double>> expected{
         {374.47334, 19.732286, 585574.65334},
@@ -91,7 +91,7 @@ TEST_F(NeuralNetworksTest, Convolution)
         5, -7, 6,
         -7, 10, 8};
     vector<SealBfvPlaintext> weightsP;
-    singleCoefficientEncode_vec(weights, weightsP, env, 100);
+    encode(weights, weightsP, env, 100);
 
     SealBfvPlaintext bias0{5, env, 1000};
     SealBfvPlaintext bias1{-3, env, 1000};
@@ -107,7 +107,7 @@ TEST_F(NeuralNetworksTest, Convolution)
        env);
 
     vector<vector<double>> res;
-    decrypt_vec(destination, res, env);
+    decrypt(destination, res, env);
 
     vector<vector<double>> expected{
         {7}, {48}, {25}, {-32}, {-4}, {13}, {-36}, {-1}, {5}, {65}, {73}, {28}, {59}, {32}, {27}, {33}, {2}, {-3}};

@@ -76,3 +76,14 @@ target_include_directories(seal_benchmark
     PUBLIC 
         ${PROJECT_SOURCE_DIR}/include
 )
+
+################################
+# Unit Test LL_nn_test
+################################
+add_executable(LL_nn_test test/LLNeuralNetworksTest.cpp)
+target_link_libraries(LL_nn_test gtest_main core)
+target_include_directories(LL_nn_test
+    PUBLIC 
+        ${PROJECT_SOURCE_DIR}/include
+)
+

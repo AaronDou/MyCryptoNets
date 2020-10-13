@@ -33,8 +33,8 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
         vector<SealBfvPlaintext> BiasesP;
 
         convolutionOrganizer(inputE, 5, 2, 1, inputEPtr);
-        singleCoefficientEncode_vec(params.convWeights, WeightsP, env, CONV_SCALE);
-        singleCoefficientEncode_vec(params.convBiases, BiasesP, env, inputE[0].scale * CONV_SCALE);
+        encode(params.convWeights, WeightsP, env, CONV_SCALE);
+        encode(params.convBiases, BiasesP, env, inputE[0].scale * CONV_SCALE);
         decor(inputEPtr,
               WeightsP,
               BiasesP,
@@ -57,7 +57,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
 
     // Square activation layer
     {
-        auto decor = make_decorator(square_inplace_vec, "Square");
+        auto decor = make_decorator(square_inplace, "Square");
 
         decor(intermediateResultsE, env);
 
@@ -72,8 +72,8 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
         vector<SealBfvPlaintext> WeightsP;
         vector<SealBfvPlaintext> BiasesP;
 
-        singleCoefficientEncode_vec(params.FC1Weights, WeightsP, env, FC1_SCALE);
-        singleCoefficientEncode_vec(params.FC1Biases, BiasesP, env, intermediateResultsE[0].scale * FC1_SCALE);
+        encode(params.FC1Weights, WeightsP, env, FC1_SCALE);
+        encode(params.FC1Biases, BiasesP, env, intermediateResultsE[0].scale * FC1_SCALE);
         decor(getPointers(intermediateResultsE),
               WeightsP,
               BiasesP,
@@ -89,11 +89,11 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
 
     // Debugging
     vector<vector<double>> temp;
-    decrypt_vec(intermediateResultsE, temp, env);
+    decrypt(intermediateResultsE, temp, env);
 
     // Square activation layer
     {
-        auto decor = make_decorator(square_inplace_vec, "Square");
+        auto decor = make_decorator(square_inplace, "Square");
 
         decor(intermediateResultsE, env);
 
@@ -108,8 +108,8 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
         vector<SealBfvPlaintext> WeightsP;
         vector<SealBfvPlaintext> BiasesP;
 
-        singleCoefficientEncode_vec(params.FC2Weights, WeightsP, env, FC2_SCALE);
-        singleCoefficientEncode_vec(params.FC2Biases, BiasesP, env, intermediateResultsE[0].scale * FC2_SCALE);
+        encode(params.FC2Weights, WeightsP, env, FC2_SCALE);
+        encode(params.FC2Biases, BiasesP, env, intermediateResultsE[0].scale * FC2_SCALE);
         decor(getPointers(intermediateResultsE),
               WeightsP,
               BiasesP,
@@ -124,7 +124,7 @@ vector<vector<double>> cryptonets(const Params &params, const vector<SealBfvCiph
     }
 
     vector<vector<double>> res;
-    decrypt_vec(intermediateResultsE, res, env);
+    decrypt(intermediateResultsE, res, env);
 
     return res;
 }
