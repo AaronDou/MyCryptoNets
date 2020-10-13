@@ -16,7 +16,6 @@ protected:
 
         EncryptionParameters parms(scheme_type::BFV);
         parms.set_poly_modulus_degree(poly_modulus_degree);
-        // parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
         parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
         parms.set_plain_modulus(PlainModulus::Batching(poly_modulus_degree, 18));
 
@@ -24,7 +23,6 @@ protected:
         KeyGenerator keygen(context);
         auto public_key = keygen.public_key();
         auto secret_key = keygen.secret_key();
-        // relin_keys = keygen.relin_keys(60);
         relin_keys = keygen.relin_keys_local();
 
         encryptorPtr = make_shared<Encryptor>(context, public_key);

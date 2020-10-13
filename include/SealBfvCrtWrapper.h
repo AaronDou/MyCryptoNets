@@ -37,9 +37,6 @@ namespace mycryptonets
         {
             EncryptionParameters parms(scheme_type::BFV);
             parms.set_poly_modulus_degree(poly_modulus_degree);
-            // version 3.2.1
-            // parms.set_coeff_modulus(DefaultParams::coeff_modulus_128(poly_modulus_degree));
-            // version 3.5+
             parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
             parms.set_plain_modulus(plain_modulus);
 
@@ -47,9 +44,6 @@ namespace mycryptonets
             KeyGenerator keygen(context);
             public_key = keygen.public_key();
             secret_key = keygen.secret_key();
-            // version 3.2.1
-            // relin_keys = keygen.relin_keys(10);
-            // version 3.5+
             relin_keys = keygen.relin_keys_local();
 
             encryptorPtr = make_shared<Encryptor>(context, public_key);
