@@ -26,4 +26,4 @@ FC2 took 0.406356 seconds
 Accuracy is 7983/8192=0.974487
 ```
 
-LoLa
+LoLa (WIP)
